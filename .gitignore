@@ -22,3 +22,4 @@ nbproject/private/
 git add .
 git commit -m "add macos"
 git push origin main
+/bin/
