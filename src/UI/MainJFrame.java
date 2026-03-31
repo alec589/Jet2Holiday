@@ -28,8 +28,9 @@ import javax.swing.SwingUtilities;
 import java.awt.GridLayout;
 import java.util.Collection;
 import java.util.HashMap;
+import java.awt.Font;
 
-public class MainPanel_testing extends JFrame {
+public class MainJFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -41,7 +42,7 @@ public class MainPanel_testing extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainPanel_testing frame = new MainPanel_testing();
+					MainJFrame frame = new MainJFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,6 +50,7 @@ public class MainPanel_testing extends JFrame {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the frame.
@@ -57,8 +59,6 @@ public class MainPanel_testing extends JFrame {
     private RecommendationService recommendationService;
     private CityGraph graph;
 
-    private HashMap<String, AreaPanel> areaPanels;
-    
     // make these panels available not only for initializeUI method
     private JPanel backBayPanel;
     private JPanel fenwayPanel;
@@ -70,8 +70,7 @@ public class MainPanel_testing extends JFrame {
     private Spot recommendedSpot;
     
     
-    
-	public MainPanel_testing() {
+	public MainJFrame() {
 		
 		initializeUI();
 		
@@ -80,9 +79,6 @@ public class MainPanel_testing extends JFrame {
 		refreshAreaPanels();
 
 	}
-
-
-
 
 
 	private void initializeUI(){
@@ -96,33 +92,33 @@ public class MainPanel_testing extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Current Area : ");
-		lblNewLabel.setBounds(35, 30, 98, 16);
+		lblNewLabel.setBounds(32, 55, 98, 16);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Destination Area : ");
-		lblNewLabel_1.setBounds(279, 30, 124, 16);
+		lblNewLabel_1.setBounds(279, 52, 124, 16);
 		contentPane.add(lblNewLabel_1);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"BackBay", "Downtown", "Newton", "Seaport", "Fenway"}));
-		comboBox.setBounds(127, 26, 140, 27);
+		comboBox.setBounds(127, 50, 140, 27);
 		contentPane.add(comboBox);
 		
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"BackBay", "Downtown", "Newton", "Seaport", "Fenway"}));
-		comboBox_1.setBounds(397, 26, 140, 27);
+		comboBox_1.setBounds(398, 46, 140, 27);
 		contentPane.add(comboBox_1);
 		
 		JButton btnNewButton = new JButton("Recommend Spot");
-		btnNewButton.setBounds(549, 25, 140, 29);
+		btnNewButton.setBounds(549, 44, 140, 29);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setBounds(701, 30, 156, 16);
+		lblNewLabel_2.setBounds(702, 52, 156, 16);
 		contentPane.add(lblNewLabel_2);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(35, 73, 929, 668);
+		tabbedPane.setBounds(37, 85, 929, 668);
 		contentPane.add(tabbedPane);
 		
 		// add 5 tabs
@@ -146,7 +142,11 @@ public class MainPanel_testing extends JFrame {
 		newtonPanel.setLayout(new GridLayout(0, 4, 10, 10));
 		tabbedPane.addTab("Newton", null, newtonPanel, null);
 		
-		
+		JLabel lblNewLabel_3 = new JLabel("Smart Parking System");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+		lblNewLabel_3.setBounds(-1, 0, 1000, 40);
+		contentPane.add(lblNewLabel_3);
 		
 	}
 	
@@ -168,9 +168,6 @@ public class MainPanel_testing extends JFrame {
 
         recommendationService = new RecommendationService(graph, parkingData);
 
-        areaPanels = new HashMap<>();
-
-        
     }
 
 
@@ -220,5 +217,4 @@ public class MainPanel_testing extends JFrame {
 	    panel.revalidate();
 	    panel.repaint();
 	}
-		
 }
