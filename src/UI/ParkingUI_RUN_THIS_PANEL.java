@@ -17,7 +17,7 @@ import Parking.ParkingData;
 import Parking.RecommendationService;
 import Parking.Spot;
 
-public class ParkingUI extends JFrame{
+public class ParkingUI_RUN_THIS_PANEL extends JFrame{
 	
 	private ParkingData parkingData;
     private RecommendationService recommendationService;
@@ -25,7 +25,7 @@ public class ParkingUI extends JFrame{
 
     private HashMap<String, AreaPanel> areaPanels;
 
-    public ParkingUI() {
+    public ParkingUI_RUN_THIS_PANEL() {
         parkingData = new ParkingData();
 
         graph = new CityGraph();
@@ -74,7 +74,7 @@ public class ParkingUI extends JFrame{
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ParkingUI());
+        SwingUtilities.invokeLater(() -> new ParkingUI_RUN_THIS_PANEL());
     }
     
 }
