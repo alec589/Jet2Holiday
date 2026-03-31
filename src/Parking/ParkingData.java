@@ -17,15 +17,19 @@ public class ParkingData {
             int x = rand.nextInt(750) + 20; 
             int y = rand.nextInt(550) + 20;
             double price = 2.0 + (4.0 * rand.nextDouble());
-            Spot newSpot = new Spot(id, x, y, price);
+            
+            String[] areas = {"BackBay", "Fenway", "Downtown", "Seaport", "Newton"};
+            String area = areas[rand.nextInt(areas.length)];
+            
+            Spot newSpot = new Spot(id, x, y, price, area);
             
             if (rand.nextBoolean()) {
                 newSpot.setOccupied(true);
             }
+            // set 50 spots here and add into allspots
             allSpots.put(id, newSpot);
         }
     }
-
 
     public HashMap<String, Spot> getAllSpots() {
         return allSpots;
