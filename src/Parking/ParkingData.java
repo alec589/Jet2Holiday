@@ -12,48 +12,45 @@ public class ParkingData {
 
     private void initializeData() {
     	Random rand = new Random();
-    	for (int i = 1; i <= 50; i++) {
-            String id = "BOS-" + (100 + i); 
-            
+        String[] areas = {"BackBay", "Fenway", "Downtown", "Seaport", "Newton"};
+        int idCounter = 100;
+
+        for (String area : areas) {
             int baseX = 0;
             int baseY = 0;
-            
-            double price = 2.0 + (4.0 * rand.nextDouble());
-            
-            String[] areas = {"BackBay", "Fenway", "Downtown", "Seaport", "Newton"};
-            String area = areas[rand.nextInt(areas.length)];
-            
             switch (area) {
-            case "BackBay":
-                baseX = 100; baseY = 100;
-                break;
-            case "Fenway":
-                baseX = 300; baseY = 100;
-                break;
-            case "Downtown":
-                baseX = 500; baseY = 250;
-                break;
-            case "Seaport":
-                baseX = 700; baseY = 250;
-                break;
-            case "Newton":
-                baseX = 100; baseY = 450;
-                break;
-            case "Cambridge":
-                baseX = 300; baseY = 50;
-                break;
+                case "BackBay":
+                    baseX = 100; baseY = 100;
+                    break;
+                case "Fenway":
+                    baseX = 300; baseY = 100;
+                    break;
+                case "Downtown":
+                    baseX = 500; baseY = 250;
+                    break;
+                case "Seaport":
+                    baseX = 700; baseY = 250;
+                    break;
+                case "Newton":
+                    baseX = 100; baseY = 450;
+                    break;
             }
-        
-            int x = baseX + rand.nextInt(80) - 40;
-            int y = baseY + rand.nextInt(80) - 40;
-            
-            Spot newSpot = new Spot(id, x, y, price, area);
-            
-            if (rand.nextBoolean()) {
-                newSpot.setOccupied(true);
+
+            for (int i = 0; i < 16; i++) {
+                String id = "BOS-" + idCounter++;
+                double price = 2.0 + (4.0 * rand.nextDouble());
+
+                int x = baseX + rand.nextInt(80) - 40;
+                int y = baseY + rand.nextInt(80) - 40;
+
+                Spot newSpot = new Spot(id, x, y, price, area);
+
+                if (rand.nextBoolean()) {
+                    newSpot.setOccupied(true);
+                }
+
+                allSpots.put(id, newSpot);
             }
-            // set 50 spots here and add into allspots
-            allSpots.put(id, newSpot);
         }
     }
 
