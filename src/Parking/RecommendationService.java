@@ -15,12 +15,13 @@ public class RecommendationService {
         this.parkingData = parkingData;
     }
 
-    public Spot recommend(String destinationArea) {
+    public Spot recommend(String userArea, String destinationArea) {
 
         PriorityQueue<Spot> pq = new PriorityQueue<>(
             Comparator.comparingDouble(spot ->
-                spot.getPricePerHour() +
-                graph.shortestDistance(spot.getArea(), destinationArea)
+                spot.getPricePerHour()
+                + graph.shortestDistance(userArea, spot.getArea())
+                + graph.shortestDistance(spot.getArea(), destinationArea)
             )
         );
 
