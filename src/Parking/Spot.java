@@ -45,4 +45,7 @@ public class Spot {
     public void setOccupied(boolean occupied) {
         this.occupied = occupied;
     }
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
