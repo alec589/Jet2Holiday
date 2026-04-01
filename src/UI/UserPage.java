@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import java.util.Stack;
 public class UserPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -51,6 +51,7 @@ public class UserPage extends JFrame {
 	 * Create the frame.
 	 */
 	private ParkingData parkingData;
+	private Stack<Spot> historyStack = new Stack<>();
     private RecommendationService recommendationService;
     private CityGraph graph;
 
@@ -120,6 +121,7 @@ public class UserPage extends JFrame {
 			    if (recommendedSpot == null) {
 			        resultLabel.setText("No available spot found");
 			    } else {
+			    	historyStack.push(recommendedSpot);
 			        resultLabel.setText(
 			            "Recommended: " + recommendedSpot.getId() +
 			            " (" + recommendedSpot.getArea() + ")"
@@ -173,6 +175,21 @@ public class UserPage extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		btnNewButton_2 = new JButton("View History");
+		btnNewButton_2.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (historyStack.isEmpty()) {
+		            javax.swing.JOptionPane.showMessageDialog(null, "No history found!");
+		        } else {
+		            Spot lastSpot = historyStack.pop();
+		            
+		            String info = "Last Viewed Spot: " + lastSpot.getId() + 
+		                          "\nArea: " + lastSpot.getArea() + 
+		                          "\nPrice: $" + String.format("%.2f", lastSpot.getPricePerHour());
+		            
+		            javax.swing.JOptionPane.showMessageDialog(null, info);
+		        }
+		    }
+		});
 		btnNewButton_2.setBounds(247, 721, 117, 38);
 		contentPane.add(btnNewButton_2);
 		

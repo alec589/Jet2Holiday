@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import Parking.ParkingData;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -89,22 +92,22 @@ public class LoginPage extends JFrame {
 	}
 	
 	private void handleLogin() {
-        String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
+	    String username = usernameField.getText();
+	    String password = new String(passwordField.getPassword());
 
-        if (username.equals("admin") && password.equals("1234")) {
+	    ParkingData sharedData = new ParkingData(); 
 
-            new AdminPage().setVisible(true);
-            dispose();
+	    if (username.equals("admin") && password.equals("1234")) {
+	        new AdminPage(sharedData).setVisible(true);
+	        dispose();
 
-        } else if (username.equals("user") && password.equals("1234")) {
+	    } else if (username.equals("user") && password.equals("1234")) {
+	        new UserPage().setVisible(true); 
+	        dispose();
 
-            new UserPage().setVisible(true);
-            dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid username or password");
-        }
-    }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Invalid username or password");
+	    }
+	}
 
 }
