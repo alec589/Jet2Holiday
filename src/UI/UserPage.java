@@ -154,6 +154,7 @@ public class UserPage extends JFrame {
 		preferenceSlider = new JSlider(0, 100, 50); 
 		preferenceSlider.setBounds(127, 85, 200, 40);
 		preferenceSlider.setMajorTickSpacing(25);
+		preferenceSlider.setMinorTickSpacing(5); 
 		preferenceSlider.setPaintTicks(true);
 		preferenceSlider.setPaintLabels(true);
 		contentPane.add(preferenceSlider);
