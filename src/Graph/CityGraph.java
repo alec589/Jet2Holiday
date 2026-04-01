@@ -23,6 +23,7 @@ public class CityGraph implements GraphInterface{
         }
     }
 
+    
     // inner class 2: NodeDistance
     private static class NodeDistance {
         String node;
