@@ -1,4 +1,4 @@
-package Parking;
+package PriorityQueue;
 /**
  * An interface that describes the operations of a priority queue.
  */
