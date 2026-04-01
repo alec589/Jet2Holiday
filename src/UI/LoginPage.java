@@ -102,7 +102,7 @@ public class LoginPage extends JFrame {
 	        dispose();
 
 	    } else if (username.equals("user") && password.equals("1234")) {
-	        new UserPage().setVisible(true); 
+	        new UserPage(sharedData).setVisible(true); 
 	        dispose();
 
 	    } else {

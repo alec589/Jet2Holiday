@@ -109,7 +109,7 @@ public class AdminPage extends JFrame {
             new LoginPage().setVisible(true);
             dispose();
         });
-        btnClose.setBounds(160, 250, 150, 30);
+        btnClose.setBounds(170, 253, 150, 30);
         contentPane.add(btnClose);
     }
 }

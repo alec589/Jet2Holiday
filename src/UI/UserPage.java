@@ -72,12 +72,11 @@ public class UserPage extends JFrame {
     private JButton btnNewButton_2;
     
     
-	public UserPage() {
+	public UserPage(ParkingData sharedData) {
 		
 		initializeUI();
-		
+		this.parkingData = sharedData;
 		initializeData();
-		
 		refreshAreaPanels();
 
 	}
