@@ -5,9 +5,10 @@ package Parking;
 public interface PriorityQueueInterface<T> {
     /**
      * Adds a new entry to this priority queue.
-     * @param newEntry An object to be added.
+     * @param newEntry  An object to be added.
+     * @param priorityScore  The priority score.
      */
-    public void insert(T newEntry);
+    public void insert(T newEntry, double priorityScore);
 
     /**
      * Removes and returns the highest priority entry.
