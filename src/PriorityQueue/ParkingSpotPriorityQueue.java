@@ -1,7 +1,9 @@
-package Parking;
+package PriorityQueue;
 //需要孙作霖写
 import java.util.ArrayList;
 import java.util.EmptyStackException;
+
+import Parking.Spot;
 
 public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
 
