@@ -12,36 +12,25 @@ public class ParkingData {
 
     private void initializeData() {
     	Random rand = new Random();
+
         String[] areas = {"BackBay", "Fenway", "Downtown", "Seaport", "Newton"};
         int idCounter = 100;
 
         for (String area : areas) {
-            int baseX = 0;
-            int baseY = 0;
-            switch (area) {
-                case "BackBay":
-                    baseX = 100; baseY = 100;
-                    break;
-                case "Fenway":
-                    baseX = 300; baseY = 100;
-                    break;
-                case "Downtown":
-                    baseX = 500; baseY = 250;
-                    break;
-                case "Seaport":
-                    baseX = 700; baseY = 250;
-                    break;
-                case "Newton":
-                    baseX = 100; baseY = 450;
-                    break;
-            }
-
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < 12; i++) {
                 String id = "BOS-" + idCounter++;
                 double price = 2.0 + (4.0 * rand.nextDouble());
 
-                int x = baseX + rand.nextInt(80) - 40;
-                int y = baseY + rand.nextInt(80) - 40;
+                int x = 0;
+                int y = 0;
+
+                if (i < 6) {
+                    x = 25 + i * 145;
+                    y = 50;
+                } else {
+                    x = 25 + (i - 6) * 145;
+                    y = 350;
+                }
 
                 Spot newSpot = new Spot(id, x, y, price, area);
 

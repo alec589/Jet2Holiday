@@ -29,6 +29,8 @@ import java.awt.GridLayout;
 import java.util.Collection;
 import java.util.HashMap;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainJFrame extends JFrame {
 
@@ -60,11 +62,15 @@ public class MainJFrame extends JFrame {
     private CityGraph graph;
 
     // make these panels available not only for initializeUI method
-    private JPanel backBayPanel;
-    private JPanel fenwayPanel;
-    private JPanel downtownPanel;
-    private JPanel seaportPanel;
-    private JPanel newtonPanel;
+    private AreaMapPanel backBayPanel;
+    private AreaMapPanel fenwayPanel;
+    private AreaMapPanel downtownPanel;
+    private AreaMapPanel seaportPanel;
+    private AreaMapPanel newtonPanel;
+    
+    private JComboBox<String> comboBox;
+    private JComboBox<String> comboBox_1;
+    private JLabel resultLabel;
     
     private Collection<Spot> spots;
     private Spot recommendedSpot;
@@ -96,50 +102,64 @@ public class MainJFrame extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Destination Area : ");
-		lblNewLabel_1.setBounds(279, 52, 124, 16);
+		lblNewLabel_1.setBounds(279, 55, 124, 16);
 		contentPane.add(lblNewLabel_1);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"BackBay", "Downtown", "Newton", "Seaport", "Fenway"}));
-		comboBox.setBounds(127, 50, 140, 27);
+		comboBox.setBounds(127, 52, 140, 27);
 		contentPane.add(comboBox);
 		
-		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"BackBay", "Downtown", "Newton", "Seaport", "Fenway"}));
-		comboBox_1.setBounds(398, 46, 140, 27);
+		comboBox_1.setBounds(398, 52, 140, 27);
 		contentPane.add(comboBox_1);
 		
 		JButton btnNewButton = new JButton("Recommend Spot");
-		btnNewButton.setBounds(549, 44, 140, 29);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String currentArea = (String) comboBox.getSelectedItem();
+			    String destinationArea = (String) comboBox_1.getSelectedItem();
+
+			    recommendedSpot = recommendationService.recommend(currentArea, destinationArea);
+
+			    if (recommendedSpot == null) {
+			        resultLabel.setText("No available spot found");
+			    } else {
+			        resultLabel.setText(
+			            "Recommended: " + recommendedSpot.getId() +
+			            " (" + recommendedSpot.getArea() + ")"
+			        );
+			    }
+
+			    refreshAreaPanels();
+			}
+		});
+		btnNewButton.setBounds(549, 49, 140, 29);
 		contentPane.add(btnNewButton);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setBounds(702, 52, 156, 16);
-		contentPane.add(lblNewLabel_2);
+		resultLabel = new JLabel("Please select current and destination area!");
+		resultLabel.setBounds(702, 54, 300, 16);
+		contentPane.add(resultLabel);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(37, 85, 929, 668);
+		tabbedPane.setBounds(37, 94, 929, 659);
 		contentPane.add(tabbedPane);
 		
 		// add 5 tabs
-		backBayPanel = new JPanel();
-		backBayPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		backBayPanel = new AreaMapPanel("BackBay");
 		tabbedPane.addTab("BackBay", null, backBayPanel, null);
 
-		fenwayPanel = new JPanel();
-		fenwayPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		fenwayPanel = new AreaMapPanel("Fenway");
 		tabbedPane.addTab("Fenway", null, fenwayPanel, null);
 
-		downtownPanel = new JPanel();
-		downtownPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		downtownPanel = new AreaMapPanel("Downtown");
 		tabbedPane.addTab("Downtown", null, downtownPanel, null);
 
-		seaportPanel = new JPanel();
-		seaportPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		seaportPanel = new AreaMapPanel("Seaport");
 		tabbedPane.addTab("Seaport", null, seaportPanel, null);
 
-		newtonPanel = new JPanel();
-		newtonPanel.setLayout(new GridLayout(0, 4, 10, 10));
+		newtonPanel = new AreaMapPanel("Newton");
 		tabbedPane.addTab("Newton", null, newtonPanel, null);
 		
 		JLabel lblNewLabel_3 = new JLabel("Smart Parking System");
@@ -172,11 +192,17 @@ public class MainJFrame extends JFrame {
 
 
 	private void refreshAreaPanels() {
-	    refreshOneArea(backBayPanel, "BackBay");
-	    refreshOneArea(fenwayPanel, "Fenway");
-	    refreshOneArea(downtownPanel, "Downtown");
-	    refreshOneArea(seaportPanel, "Seaport");
-	    refreshOneArea(newtonPanel, "Newton");
+		backBayPanel.setSpots(parkingData.getSpotsByArea("BackBay"));
+	    fenwayPanel.setSpots(parkingData.getSpotsByArea("Fenway"));
+	    downtownPanel.setSpots(parkingData.getSpotsByArea("Downtown"));
+	    seaportPanel.setSpots(parkingData.getSpotsByArea("Seaport"));
+	    newtonPanel.setSpots(parkingData.getSpotsByArea("Newton"));
+
+	    backBayPanel.setRecommendedSpot(recommendedSpot);
+	    fenwayPanel.setRecommendedSpot(recommendedSpot);
+	    downtownPanel.setRecommendedSpot(recommendedSpot);
+	    seaportPanel.setRecommendedSpot(recommendedSpot);
+	    newtonPanel.setRecommendedSpot(recommendedSpot);
 	}
 	
 	private void refreshOneArea(JPanel panel, String area) {
