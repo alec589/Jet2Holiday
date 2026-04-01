@@ -82,8 +82,7 @@ public class UserPage extends JFrame {
 	}
 
 
-	private void initializeUI(){
-		// main frame
+	private void initializeUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 800);
 		contentPane = new JPanel();
