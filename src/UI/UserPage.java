@@ -226,7 +226,6 @@ public class UserPage extends JFrame {
 	
 	private void initializeData() {
 
-		parkingData = new ParkingData();
 
         graph = new CityGraph();
         graph.addEdge("BackBay", "Fenway", 2);
