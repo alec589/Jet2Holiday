@@ -47,11 +47,11 @@ public class AreaMapPanel extends JPanel{
     private void drawRoads(Graphics g) {
     	Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(130, 130, 130));
-        g2.fillRect(20, 300, 870, 30);
+        g2.fillRect(20, 280, 870, 30);
         
         g2.setColor(Color.BLACK);
         g2.setFont(new Font("Arial", Font.BOLD, 14));
-        g2.drawString("Main Road", 420, 320);
+        g2.drawString("Main Road", 420, 300);
     }
 
     private void drawSpot(Graphics g, Spot spot) {

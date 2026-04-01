@@ -26,10 +26,10 @@ public class ParkingData {
 
                 if (i < 6) {
                     x = 25 + i * 145;
-                    y = 50;
+                    y = 30;
                 } else {
                     x = 25 + (i - 6) * 145;
-                    y = 350;
+                    y = 330;
                 }
 
                 Spot newSpot = new Spot(id, x, y, price, area);

@@ -32,7 +32,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MainJFrame extends JFrame {
+public class UserPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -41,16 +41,9 @@ public class MainJFrame extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainJFrame frame = new MainJFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+	        new LoginPage().setVisible(true);
+	    });
 	}
 	
 
@@ -74,9 +67,11 @@ public class MainJFrame extends JFrame {
     
     private Collection<Spot> spots;
     private Spot recommendedSpot;
+    private JButton btnNewButton_1;
+    private JButton btnNewButton_2;
     
     
-	public MainJFrame() {
+	public UserPage() {
 		
 		initializeUI();
 		
@@ -143,7 +138,7 @@ public class MainJFrame extends JFrame {
 		contentPane.add(resultLabel);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(37, 94, 929, 659);
+		tabbedPane.setBounds(37, 94, 929, 620);
 		contentPane.add(tabbedPane);
 		
 		// add 5 tabs
@@ -167,6 +162,20 @@ public class MainJFrame extends JFrame {
 		lblNewLabel_3.setFont(new Font("Lucida Grande", Font.BOLD, 18));
 		lblNewLabel_3.setBounds(-1, 0, 1000, 40);
 		contentPane.add(lblNewLabel_3);
+		
+		btnNewButton_1 = new JButton("Logout");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new LoginPage().setVisible(true);
+			    dispose();
+			}
+		});
+		btnNewButton_1.setBounds(652, 721, 117, 38);
+		contentPane.add(btnNewButton_1);
+		
+		btnNewButton_2 = new JButton("View History");
+		btnNewButton_2.setBounds(247, 721, 117, 38);
+		contentPane.add(btnNewButton_2);
 		
 	}
 	
