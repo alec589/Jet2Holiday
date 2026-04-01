@@ -115,8 +115,12 @@ public class UserPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String currentArea = (String) comboBox.getSelectedItem();
 			    String destinationArea = (String) comboBox_1.getSelectedItem();
+			    // ayan 到时候继续修改，先用user preferences各0.5
+			    double distanceWeight = 0.5;
+			    double priceWeight = 0.5;
 
-			    recommendedSpot = recommendationService.recommend(currentArea, destinationArea);
+			    recommendedSpot = recommendationService.recommend(currentArea, destinationArea,distanceWeight,
+			    	    priceWeight);
 
 			    if (recommendedSpot == null) {
 			        resultLabel.setText("No available spot found");
