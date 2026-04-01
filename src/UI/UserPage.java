@@ -32,6 +32,8 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Stack;
+
+import javax.swing.JSlider;
 public class UserPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -65,6 +67,8 @@ public class UserPage extends JFrame {
     private JComboBox<String> comboBox;
     private JComboBox<String> comboBox_1;
     private JLabel resultLabel;
+    
+    private JSlider preferenceSlider; 
     
     private Collection<Spot> spots;
     private Spot recommendedSpot;
@@ -114,8 +118,12 @@ public class UserPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String currentArea = (String) comboBox.getSelectedItem();
 			    String destinationArea = (String) comboBox_1.getSelectedItem();
+			    
+			    double distanceWeight = preferenceSlider.getValue() / 100.0;
+			    double priceWeight = 1.0 - distanceWeight;
 
-			    recommendedSpot = recommendationService.recommend(currentArea, destinationArea);
+			    recommendedSpot = recommendationService.recommend(currentArea, destinationArea,distanceWeight,
+			    	    priceWeight);
 
 			    if (recommendedSpot == null) {
 			        resultLabel.setText("No available spot found");
@@ -137,8 +145,29 @@ public class UserPage extends JFrame {
 		resultLabel.setBounds(702, 54, 300, 16);
 		contentPane.add(resultLabel);
 		
+		// User Preference Slider
+		JLabel prefLabel = new JLabel("Preference:");
+		prefLabel.setBounds(32, 90, 100, 16);
+		contentPane.add(prefLabel);
+
+		preferenceSlider = new JSlider(0, 100, 50); 
+		preferenceSlider.setBounds(127, 85, 200, 40);
+		preferenceSlider.setMajorTickSpacing(25);
+		preferenceSlider.setMinorTickSpacing(5); 
+		preferenceSlider.setPaintTicks(true);
+		preferenceSlider.setPaintLabels(true);
+		contentPane.add(preferenceSlider);
+
+		// preference label description
+		JLabel leftLabel = new JLabel("Affordable");
+		leftLabel.setBounds(127, 120, 80, 16);
+		contentPane.add(leftLabel);
+
+		JLabel rightLabel = new JLabel("Convenient");
+		rightLabel.setBounds(250, 120, 100, 16);
+		contentPane.add(rightLabel);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(37, 94, 929, 620);
+		tabbedPane.setBounds(37, 150, 929, 560);
 		contentPane.add(tabbedPane);
 		
 		// add 5 tabs
