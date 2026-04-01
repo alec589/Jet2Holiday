@@ -1,8 +1,8 @@
 package Parking;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
+//import java.util.Comparator;
+//import java.util.PriorityQueue;
+import PriorityQueue.ParkingSpotPriorityQueue;
 import Graph.CityGraph;
 
 public class RecommendationService {
@@ -15,26 +15,6 @@ public class RecommendationService {
         this.graph = graph;
         this.parkingData = parkingData;
     }
-  //wang lu version 
-    /* public Spot recommend(String userArea, String destinationArea) {
-
-        PriorityQueue<Spot> pq = new PriorityQueue<>(
-            Comparator.comparingDouble(spot ->
-                spot.getPricePerHour()
-                + graph.shortestDistance(userArea, spot.getArea())
-                + graph.shortestDistance(spot.getArea(), destinationArea)
-            )
-        );
-
-        for (Spot spot : parkingData.getAllSpots().values()) {
-            if (!spot.isOccupied()) {
-                pq.add(spot);
-            }
-        }
-
-        return pq.isEmpty() ? null : pq.poll();
-    }
-    */
     
     /**
      * Recommend best parking spot using:
@@ -67,41 +47,33 @@ public class RecommendationService {
                 if (totalDistance > maxDistance) maxDistance = totalDistance;
             }
         }
-
-        // Java lambda expressions can only use variables that are final or effectively final
-        final double finalMinPrice = minPrice;
-        final double finalMaxPrice = maxPrice;
-        final double finalMinDistance = minDistance;
-        final double finalMaxDistance = maxDistance;
-
-        // Create a priority queue (using normalization + weights)
-        PriorityQueue<Spot> pq = new PriorityQueue<>(
-            Comparator.comparingDouble(spot -> {
+        
+      //create a queue
+        ParkingSpotPriorityQueue pq = new ParkingSpotPriorityQueue();
+   
+     // compute score and insert into custom priority queue
+        for (Spot spot : parkingData.getAllSpots().values()) {
+            if (!spot.isOccupied()) {
 
                 double price = spot.getPricePerHour();
 
                 double totalDistance =
-                    graph.shortestDistance(userArea, spot.getArea()) +
                     graph.shortestDistance(spot.getArea(), destinationArea);
 
-                double normalizedPrice = normalize(price, finalMinPrice, finalMaxPrice);
-                double normalizedDistance = normalize(totalDistance, finalMinDistance, finalMaxDistance);
+                double normalizedPrice = normalize(price, minPrice, maxPrice);
+                double normalizedDistance = normalize(totalDistance, minDistance, maxDistance);
 
-                return distanceWeight * normalizedDistance
-                     + priceWeight * normalizedPrice;
-            })
-        );
+                double score =
+                    distanceWeight * normalizedDistance +
+                    priceWeight * normalizedPrice;
 
-        // Reserve all available parking spaces
-        for (Spot spot : parkingData.getAllSpots().values()) {
-            if (!spot.isOccupied()) {
-                pq.add(spot);
+                pq.insert(spot, score);
             }
         }
 
-        return pq.isEmpty() ? null : pq.poll();
+        return pq.isEmpty() ? null : pq.removeBest();
     }
-
+      
     // Normalize value to [0,1]
     private double normalize(double value, double min, double max) {
         if (max == min) return 0.0;
