@@ -1,11 +1,11 @@
 package Graph;
 
-public interface GraphInterface {
-	
-	public void addNode(Node node);
-	
-	public void addEdge(Node from, Node to, double weight);
-	
-	public double shortestDistance(Node start, Node end);
-	
+public interface GraphInterface<T> {
+
+    public void addNode(T node);
+
+    public void addEdge(T from, T to, double weight);
+
+    public double shortestDistance(T start, T end);
+    
 }

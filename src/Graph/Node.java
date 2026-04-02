@@ -1,5 +1,7 @@
 package Graph;
 
+import Parking.Coordinate;
+
 public class Node {
 	private String id;
     private Coordinate coordinate;
@@ -19,7 +21,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{id='" + id + "', coordinate=("
-                + coordinate.getX() + "," + coordinate.getY() + ")}";
+        return id;
     }
 }

@@ -1,15 +1,15 @@
 package Parking;
 
 import PriorityQueue.MyPriorityQueue;
-import Graph.CityGraph;
+import Graph.MyGraph;
 
 public class RecommendationService {
 
-	private CityGraph graph;
+	private MyGraph graph;
     private ParkingData parkingData;
 
   
-    public RecommendationService(CityGraph graph, ParkingData parkingData) {
+    public RecommendationService(MyGraph graph, ParkingData parkingData) {
         this.graph = graph;
         this.parkingData = parkingData;
     }

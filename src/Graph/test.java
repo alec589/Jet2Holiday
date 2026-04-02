@@ -1,5 +1,7 @@
 package Graph;
 
+import Parking.Coordinate;
+
 public class test {
 	public static void main(String[] args) {
 		Coordinate c1 = new Coordinate(1, 1);

@@ -1,4 +1,6 @@
-package Graph;
+package Parking;
+
+import Graph.Node;
 
 public class Destination {
 	private String name;

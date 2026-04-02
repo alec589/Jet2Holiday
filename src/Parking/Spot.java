@@ -1,7 +1,5 @@
 package Parking;
 
-import Graph.AreaType;
-import Graph.Coordinate;
 import Graph.Node;
 
 public class Spot {

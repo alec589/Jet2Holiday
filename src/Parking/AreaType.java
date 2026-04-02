@@ -1,4 +1,4 @@
-package Graph;
+package Parking;
 
 public enum AreaType {
 	BackBay, 

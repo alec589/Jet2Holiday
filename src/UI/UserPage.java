@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Graph.CityGraph;
+import Graph.MyGraph;
 import Parking.ParkingData;
 import Parking.RecommendationService;
 import Parking.Spot;
@@ -55,7 +55,7 @@ public class UserPage extends JFrame {
 	private ParkingData parkingData;
 	private Stack<Spot> historyStack = new Stack<>();
     private RecommendationService recommendationService;
-    private CityGraph graph;
+    private MyGraph graph;
 
     // make these panels available not only for initializeUI method
     private AreaMapPanel backBayPanel;
@@ -227,7 +227,7 @@ public class UserPage extends JFrame {
 	private void initializeData() {
 
 
-        graph = new CityGraph();
+        graph = new MyGraph();
         graph.addEdge("BackBay", "Fenway", 2);
         graph.addEdge("BackBay", "Downtown", 3);
 

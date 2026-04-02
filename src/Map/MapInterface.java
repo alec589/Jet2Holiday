@@ -14,4 +14,10 @@ public interface MapInterface<K, V> {
 
     public boolean isEmpty();
     
+    // used for graph
+    public void putIfAbsent(K key, V value);
+    
+    public Iterable<K> keySet();           
+
+    public V getOrDefault(K key, V defaultValue); 
 }

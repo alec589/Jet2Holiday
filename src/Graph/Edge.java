@@ -1,21 +1,21 @@
 package Graph;
 
-public class Edge {
-	private Node from;
-    private Node to;
-    private double weight; // weight indicates distance
+public class Edge<T> {
+    private T from;
+    private T to;
+    private double weight;
 
-    public Edge(Node from, Node to, double weight) {
+    public Edge(T from, T to, double weight) {
         this.from = from;
         this.to = to;
         this.weight = weight;
     }
 
-    public Node getFrom() {
+    public T getFrom() {
         return from;
     }
 
-    public Node getTo() {
+    public T getTo() {
         return to;
     }
 
@@ -25,6 +25,6 @@ public class Edge {
 
     @Override
     public String toString() {
-        return from.getId() + " -> " + to.getId() + " (" + weight + ")";
+        return from + " -> " + to + " (" + weight + ")";
     }
 }
