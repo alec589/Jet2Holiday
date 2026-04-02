@@ -171,8 +171,7 @@ public class AdminPage extends JFrame {
     private void refreshTableData() {
         tableModel.setRowCount(0);
         String selectedArea = (String) areaComboBox.getSelectedItem();
-        //修改
-        //List<Spot> spots = parkingData.getSpotsByArea(selectedArea);
+        
         ListInterface<Spot> spots = parkingData.getSpotsByArea(selectedArea);
         for (Spot s : spots) {
             Object[] row = {s.getId(), s.getArea(), s.isOccupied() ? "Occupied" : "Available", String.format("%.2f", s.getPricePerHour())};

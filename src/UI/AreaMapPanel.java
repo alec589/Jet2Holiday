@@ -14,8 +14,7 @@ import Parking.Spot;
 
 public class AreaMapPanel extends JPanel{
 	private String areaName;
-	//修改
-    //private List<Spot> spots;
+
 	private ListInterface<Spot> spots;
     private Spot recommendedSpot;
 
@@ -23,7 +22,7 @@ public class AreaMapPanel extends JPanel{
         this.areaName = areaName;
         setBackground(Color.WHITE);
     }
-//List换成自己定义的ListInterface
+
     public void setSpots(ListInterface<Spot> spots) {
         this.spots = spots;
         repaint();
