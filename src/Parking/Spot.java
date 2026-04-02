@@ -1,6 +1,7 @@
 package Parking;
 
 import Graph.Node;
+import Graph.NodeType;
 
 public class Spot {
 	
@@ -9,6 +10,7 @@ public class Spot {
     private Coordinate coordinate;
     private double price;
     private AreaType area;
+    private Node node;
 
     public Spot(String spotId, boolean occupied, Coordinate coordinate, double price, AreaType area) {
         this.spotId = spotId;
@@ -44,7 +46,10 @@ public class Spot {
     
     // a spot can become a node
     public Node toNode() {
-        return new Node(spotId, coordinate);
+        if (node == null) {
+            node = new Node(spotId, coordinate, NodeType.SPOT);
+        }
+        return node;
     }
     
     @Override

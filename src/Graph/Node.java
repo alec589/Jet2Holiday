@@ -5,10 +5,12 @@ import Parking.Coordinate;
 public class Node {
 	private String id;
     private Coordinate coordinate;
+    private NodeType type;
 
-    public Node(String id, Coordinate coordinate) {
+    public Node(String id, Coordinate coordinate, NodeType type) {
         this.id = id;
         this.coordinate = coordinate;
+        this.type = type;
     }
 
     public String getId() {
@@ -23,4 +25,5 @@ public class Node {
     public String toString() {
         return id;
     }
+    
 }

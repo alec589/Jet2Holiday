@@ -1,7 +1,7 @@
 package Graph;
 
 public enum NodeType {
-	Spot,
-    Destination,
-    Road
+	SPOT,
+    DESTINATION,
+    ROAD
 }

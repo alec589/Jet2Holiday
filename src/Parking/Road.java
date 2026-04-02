@@ -3,35 +3,30 @@ package Parking;
 import Graph.Node;
 import Graph.NodeType;
 
-public class Destination {
+public class Road {
 	private String name;
-	private Node node;
-    private Coordinate coordinate;  // each destination has a coordinate
+    private Coordinate coordinate;
+    private Node node;
 
-    public Destination(String name, Coordinate coordinate) {
+    public Road(String name, Coordinate coordinate) {
         this.name = name;
         this.coordinate = coordinate;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    // a destination can become a node
     public Node toNode() {
         if (node == null) {
-            node = new Node(name, coordinate, NodeType.DESTINATION);
+            node = new Node(name, coordinate, NodeType.ROAD);
         }
         return node;
     }
-    
+
     @Override
     public String toString() {
-        return "Destination{name='" + name +
+        return "RoadNode{name='" + name +
                "', coordinate=(" + coordinate.getX() + "," + coordinate.getY() + ")" +
                "}";
     }

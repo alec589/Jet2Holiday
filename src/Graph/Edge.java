@@ -1,7 +1,8 @@
 package Graph;
 
 public class Edge<T> {
-    private T from;
+    
+	private T from;
     private T to;
     private double weight;
 
@@ -27,4 +28,5 @@ public class Edge<T> {
     public String toString() {
         return from + " -> " + to + " (" + weight + ")";
     }
+    
 }
