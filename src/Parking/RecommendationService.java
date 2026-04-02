@@ -1,8 +1,6 @@
 package Parking;
 
-//import java.util.Comparator;
-//import java.util.PriorityQueue;
-import PriorityQueue.ParkingSpotPriorityQueue;
+import PriorityQueue.MyPriorityQueue;
 import Graph.CityGraph;
 
 public class RecommendationService {
@@ -49,7 +47,7 @@ public class RecommendationService {
         }
         
       //create a queue
-        ParkingSpotPriorityQueue pq = new ParkingSpotPriorityQueue();
+        MyPriorityQueue<Spot> pq = new MyPriorityQueue<>();
    
      // compute score and insert into custom priority queue
         for (Spot spot : parkingData.getAllSpots().values()) {

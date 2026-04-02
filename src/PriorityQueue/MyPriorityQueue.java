@@ -1,43 +1,41 @@
 package PriorityQueue;
 
 import java.util.EmptyStackException;
-
 import List.MyArrayList;
-import Parking.Spot;
 
-public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
+public class MyPriorityQueue<T> implements PriorityQueueInterface<T> {
 
-	//Inner class: Store Spot + score
-    private static class ScoredSpot {
-        Spot spot;
-        double score;
+    // Inner class: store item + priority score
+    private static class PriorityEntry<T> {
+        T item;
+        double priority;
 
-        ScoredSpot(Spot spot, double score) {
-            this.spot = spot;
-            this.score = score;
+        PriorityEntry(T item, double priority) {
+            this.item = item;
+            this.priority = priority;
         }
     }
 
-    private MyArrayList<ScoredSpot> heap;
+    private MyArrayList<PriorityEntry<T>> heap;
 
-    // Creates an empty priority queue.
-    public ParkingSpotPriorityQueue() {
+    // Creates an empty priority queue
+    public MyPriorityQueue() {
         heap = new MyArrayList<>();
     }
 
-    //Swap two elements in heap
+    // Swap two elements in heap
     private void swap(int i, int j) {
-        ScoredSpot temp = heap.get(i);
+        PriorityEntry<T> temp = heap.get(i);
         heap.set(i, heap.get(j));
         heap.set(j, temp);
     }
 
-    // Heapify up (used after insert)
+    // Heapify up
     private void heapifyUp(int index) {
         while (index > 0) {
             int parent = (index - 1) / 2;
 
-            if (heap.get(index).score < heap.get(parent).score) {
+            if (heap.get(index).priority < heap.get(parent).priority) {
                 swap(index, parent);
                 index = parent;
             } else {
@@ -46,7 +44,7 @@ public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
         }
     }
 
-    //Heapify down (used after remove)
+    // Heapify down
     private void heapifyDown(int index) {
         int size = heap.size();
 
@@ -56,12 +54,12 @@ public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
             int smallest = index;
 
             if (left < size &&
-                heap.get(left).score < heap.get(smallest).score) {
+                heap.get(left).priority < heap.get(smallest).priority) {
                 smallest = left;
             }
 
             if (right < size &&
-                heap.get(right).score < heap.get(smallest).score) {
+                heap.get(right).priority < heap.get(smallest).priority) {
                 smallest = right;
             }
 
@@ -74,22 +72,22 @@ public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
         }
     }
 
-    //Insert with score
+    // Insert item with priority score
     @Override
-    public void insert(Spot spot, double score) {
-        heap.add(new ScoredSpot(spot, score));
+    public void insert(T newEntry, double priorityScore) {
+        heap.add(new PriorityEntry<>(newEntry, priorityScore));
         heapifyUp(heap.size() - 1);
     }
 
-    // Remove best (smallest score)
+    // Remove best (smallest priority score)
     @Override
-    public Spot removeBest() {
+    public T removeBest() {
         if (isEmpty()) {
             throw new EmptyStackException();
         }
 
-        Spot best = heap.get(0).spot;
-        ScoredSpot last = heap.remove(heap.size() - 1);
+        T best = heap.get(0).item;
+        PriorityEntry<T> last = heap.remove(heap.size() - 1);
 
         if (!heap.isEmpty()) {
             heap.set(0, last);
@@ -99,13 +97,13 @@ public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
         return best;
     }
 
-    // Peek best (without removing)
+    // Peek best
     @Override
-    public Spot peekBest() {
+    public T peekBest() {
         if (isEmpty()) {
             throw new EmptyStackException();
         }
-        return heap.get(0).spot;
+        return heap.get(0).item;
     }
 
     // Check if empty
@@ -120,11 +118,9 @@ public class ParkingSpotPriorityQueue implements PriorityQueueInterface<Spot> {
         return heap.size();
     }
 
-    //Clear queue
+    // Clear queue
     @Override
     public void clear() {
         heap.clear();
     }
-
-    
 }

@@ -1,11 +1,8 @@
 package Graph;
 
-
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
-
+import PriorityQueue.MyPriorityQueue;
 import List.ListInterface;
 import List.MyArrayList;
 
@@ -59,10 +56,9 @@ public class CityGraph implements GraphInterface{
         // use this map to store the shortest distance
         Map<String, Double> distances = new HashMap<>();
 
-        // arrange according to the shortest distance
-        PriorityQueue<NodeDistance> pq =
-                new PriorityQueue<>(Comparator.comparingDouble(n -> n.distance));
-
+     // arrange according to the shortest distance
+        MyPriorityQueue<NodeDistance> pq = new MyPriorityQueue<>();
+        
         // set an infinite distance for each node
         for (String node : adjList.keySet()) {
             distances.put(node, Double.MAX_VALUE);
@@ -71,12 +67,13 @@ public class CityGraph implements GraphInterface{
         // add it into the distance map
         // add it into the priority queue, as well
         distances.put(start, 0.0);
-        pq.add(new NodeDistance(start, 0.0));
+       //修改 pq.add(new NodeDistance(start, 0.0));
+        pq.insert(new NodeDistance(start, 0.0), 0.0);
 
         
         while (!pq.isEmpty()) {
-        	// poll method is used to get the shortest distance from the priority queue
-            NodeDistance current = pq.poll();
+        	//removeBest method is used to get the shortest distance from the priority queue          
+            NodeDistance current = pq.removeBest();
 
             // if the current distance (the shortest distance) points to the end, this is the result
             if (current.node.equals(end)) {
@@ -90,7 +87,8 @@ public class CityGraph implements GraphInterface{
             // if so, update the shortest distance
                 if (newDist < distances.get(edge.target)) {
                     distances.put(edge.target, newDist);
-                    pq.add(new NodeDistance(edge.target, newDist));
+                   //修改 pq.add(new NodeDistance(edge.target, newDist));
+                    pq.insert(new NodeDistance(edge.target, newDist), newDist);
                 }
             }
         }
