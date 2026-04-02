@@ -1,6 +1,6 @@
 package Graph;
 
-public enum Area {
+public enum AreaType {
 	BackBay, 
 	Fenway, 
 	Downtown, 

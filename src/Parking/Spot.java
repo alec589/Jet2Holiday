@@ -1,6 +1,6 @@
 package Parking;
 
-import Graph.Area;
+import Graph.AreaType;
 import Graph.Coordinate;
 import Graph.Node;
 
@@ -10,9 +10,9 @@ public class Spot {
     private boolean occupied;
     private Coordinate coordinate;
     private double price;
-    private Area area;
+    private AreaType area;
 
-    public Spot(String spotId, boolean occupied, Coordinate coordinate, double price, Area area) {
+    public Spot(String spotId, boolean occupied, Coordinate coordinate, double price, AreaType area) {
         this.spotId = spotId;
         this.occupied = occupied;
         this.coordinate = coordinate;
@@ -40,7 +40,7 @@ public class Spot {
         return price;
     }
 
-    public Area getArea() {
+    public AreaType getArea() {
         return area;
     }
     

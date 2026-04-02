@@ -38,6 +38,11 @@ public class CityGraph implements GraphInterface{
         adjList.get(to).add(edge2);
     }
     
+    public void addEdge(Node from, Node to) {
+        double weight = from.getCoordinate().distanceTo(to.getCoordinate());
+        addEdge(from, to, weight);
+    }
+    
     @Override
     public double shortestDistance(Node start, Node end) {
 

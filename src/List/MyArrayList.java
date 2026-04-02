@@ -66,7 +66,8 @@ public class MyArrayList<T> implements ListInterface<T> {
         }
         numberOfEntries = 0;
     }
-//Check if array is full;if full, create a new array with double size
+    
+    //Check if array is full;if full, create a new array with double size
     private void checkCapacity() {
         if (numberOfEntries >= list.length) {
             @SuppressWarnings("unchecked")
@@ -77,7 +78,8 @@ public class MyArrayList<T> implements ListInterface<T> {
             list = doubleSize;
         }
     }
- // Make sure index is within valid range
+    
+    // Make sure index is within valid range
     private void checkIndex(int index) {
         if (index < 0 || index >= numberOfEntries) {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
