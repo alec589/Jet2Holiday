@@ -66,8 +66,7 @@ public class CityGraph implements GraphInterface{
         // set start point as 0
         // add it into the distance map
         // add it into the priority queue, as well
-        distances.put(start, 0.0);
-       //修改 pq.add(new NodeDistance(start, 0.0));
+        distances.put(start, 0.0);      
         pq.insert(new NodeDistance(start, 0.0), 0.0);
 
         
@@ -87,7 +86,7 @@ public class CityGraph implements GraphInterface{
             // if so, update the shortest distance
                 if (newDist < distances.get(edge.target)) {
                     distances.put(edge.target, newDist);
-                   //修改 pq.add(new NodeDistance(edge.target, newDist));
+                   
                     pq.insert(new NodeDistance(edge.target, newDist), newDist);
                 }
             }
