@@ -2,6 +2,8 @@ package Parking;
 import java.util.HashMap;
 import java.util.Random;
 
+import List.ListInterface;
+import List.MyArrayList;
 public class ParkingData {
 	private HashMap<String, Spot> allSpots;
 
@@ -52,9 +54,21 @@ public class ParkingData {
             allSpots.get(id).setOccupied(occupied);
         }
     }
-    
-    public java.util.List<Spot> getSpotsByArea(String area) {
+    //wanglu version
+   /* public java.util.List<Spot> getSpotsByArea(String area) {
         java.util.List<Spot> result = new java.util.ArrayList<>();
+
+        for (Spot spot : allSpots.values()) {
+            if (spot.getArea().equals(area)) {
+                result.add(spot);
+            }
+        }
+
+        return result;
+    }*/
+    
+    public ListInterface<Spot> getSpotsByArea(String area) {
+        ListInterface<Spot> result = new MyArrayList<>();
 
         for (Spot spot : allSpots.values()) {
             if (spot.getArea().equals(area)) {

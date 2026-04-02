@@ -3,13 +3,13 @@ package List;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayList<T> implements ListInterface<T> {
+public class MyArrayList<T> implements ListInterface<T> {
     private T[] list;
     private int numberOfEntries;
     private static final int DEFAULT_CAPACITY = 10;
 
     @SuppressWarnings("unchecked")
-    public ArrayList() {
+    public MyArrayList() {
         list = (T[]) new Object[DEFAULT_CAPACITY];
         numberOfEntries = 0;
     }

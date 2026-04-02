@@ -1,13 +1,13 @@
 package Graph;
 
-import java.util.ArrayList;
-import java.util.List;
+import List.MyArrayList;
+import List.ListInterface;
 
 public class DestinationData {
-	private List<Destination> destinations;
+	private ListInterface<Destination> destinations;
 
     public DestinationData() {
-        destinations = new ArrayList<>();
+        destinations = new MyArrayList<>();
         initializeDestinations();
     }
 
@@ -38,7 +38,7 @@ public class DestinationData {
     	destinations.add(new Destination("Newton Park", "Newton", "NewtonPark"));
     }
 
-    public List<Destination> getAllDestinations() {
+    public ListInterface<Destination> getAllDestinations() {
         return destinations;
     }
 

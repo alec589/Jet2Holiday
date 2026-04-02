@@ -9,19 +9,22 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import List.ListInterface;
 import Parking.Spot;
 
 public class AreaMapPanel extends JPanel{
 	private String areaName;
-    private List<Spot> spots;
+	//修改
+    //private List<Spot> spots;
+	private ListInterface<Spot> spots;
     private Spot recommendedSpot;
 
     public AreaMapPanel(String areaName) {
         this.areaName = areaName;
         setBackground(Color.WHITE);
     }
-
-    public void setSpots(List<Spot> spots) {
+//List换成自己定义的ListInterface
+    public void setSpots(ListInterface<Spot> spots) {
         this.spots = spots;
         repaint();
     }

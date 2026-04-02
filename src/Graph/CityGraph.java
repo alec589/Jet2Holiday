@@ -1,16 +1,19 @@
 package Graph;
 
-import java.util.ArrayList;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import List.ListInterface;
+import List.MyArrayList;
+
 public class CityGraph implements GraphInterface{
 
 	// Mapping: Area/node name (string),list of distance (list of edge)
-    private Map<String, List<Edge>> adjList = new HashMap<>();
+    private Map<String, ListInterface<Edge>> adjList = new HashMap<>();
 
     // inner class 1 : Edge
     private static class Edge {
@@ -38,14 +41,14 @@ public class CityGraph implements GraphInterface{
     // put if absent to make sure the result will not be overwritten
     @Override
     public void addNode(String name) {
-        adjList.putIfAbsent(name, new ArrayList<>());
+        adjList.putIfAbsent(name, new MyArrayList<>());
     }
     
     @Override
     public void addEdge(String from, String to, double weight) {
     	// make sure these two nodes exist
-        adjList.putIfAbsent(from, new ArrayList<>());
-        adjList.putIfAbsent(to, new ArrayList<>());
+        adjList.putIfAbsent(from, new MyArrayList<>());
+        adjList.putIfAbsent(to, new MyArrayList<>());
 
         adjList.get(from).add(new Edge(to, weight));
         adjList.get(to).add(new Edge(from, weight)); 
@@ -82,7 +85,7 @@ public class CityGraph implements GraphInterface{
             }
             
             // create new distance = current distance + edge weight
-            for (Edge edge : adjList.getOrDefault(current.node, new ArrayList<>())) {
+            for (Edge edge : adjList.getOrDefault(current.node, new MyArrayList<>())) {
                 double newDist = current.distance + edge.weight;
 
             // if so, update the shortest distance
