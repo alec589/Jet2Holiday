@@ -1,30 +1,32 @@
 package Graph;
 
 public class Destination {
-	private String name;     
-    private String area;   
-    private String nodeId;   // accordingly node id
+	private String name;
+    private Coordinate coordinate;  // each destination has a coordinate
 
-    public Destination(String name, String area, String nodeId) {
+    public Destination(String name, Coordinate coordinate) {
         this.name = name;
-        this.area = area;
-        this.nodeId = nodeId;
+        this.coordinate = coordinate;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getArea() {
-        return area;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public String getNodeId() {
-        return nodeId;
+    // a destination can become a node
+    public Node toNode() {
+        return new Node(name, coordinate);
     }
-
+    
     @Override
     public String toString() {
-        return name;
+        return "Destination{name='" + name +
+               "', coordinate=(" + coordinate.getX() + "," + coordinate.getY() + ")" +
+               "}";
     }
+    
 }

@@ -8,86 +8,64 @@ import List.MyArrayList;
 
 public class CityGraph implements GraphInterface{
 
-	// Mapping: Area/node name (string),list of distance (list of edge)
-    private Map<String, ListInterface<Edge>> adjList = new HashMap<>();
+	// use list interface
+	private Map<Node, ListInterface<Edge>> adjList = new HashMap<>();
 
-    // inner class 1 : Edge
-    private static class Edge {
-        String target;
-        double weight;
+	private static class NodeDistance {
+	    Node node;
+	    double distance;
 
-        Edge(String target, double weight) {
-            this.target = target;
-            this.weight = weight;
-        }
-    }
-
+	    NodeDistance(Node node, double distance) {
+	        this.node = node;
+	        this.distance = distance;
+	    }
+	}
     
-    // inner class 2: NodeDistance
-    private static class NodeDistance {
-        String node;
-        double distance;
-
-        NodeDistance(String node, double distance) {
-            this.node = node;
-            this.distance = distance;
-        }
-    }
-    
-    // put if absent to make sure the result will not be overwritten
     @Override
-    public void addNode(String name) {
-        adjList.putIfAbsent(name, new MyArrayList<>());
+    public void addNode(Node node) {
+        adjList.putIfAbsent(node, new MyArrayList<>());
     }
     
     @Override
-    public void addEdge(String from, String to, double weight) {
-    	// make sure these two nodes exist
+    public void addEdge(Node from, Node to, double weight) {
         adjList.putIfAbsent(from, new MyArrayList<>());
         adjList.putIfAbsent(to, new MyArrayList<>());
 
-        adjList.get(from).add(new Edge(to, weight));
-        adjList.get(to).add(new Edge(from, weight)); 
+        Edge edge1 = new Edge(from, to, weight);
+        Edge edge2 = new Edge(to, from, weight);
+
+        adjList.get(from).add(edge1);
+        adjList.get(to).add(edge2);
     }
     
     @Override
-    public double shortestDistance(String start, String end) {
+    public double shortestDistance(Node start, Node end) {
 
-        // use this map to store the shortest distance
-        Map<String, Double> distances = new HashMap<>();
-
-     // arrange according to the shortest distance
+    	Map<Node, Double> distances = new HashMap<>();
         MyPriorityQueue<NodeDistance> pq = new MyPriorityQueue<>();
         
-        // set an infinite distance for each node
-        for (String node : adjList.keySet()) {
+  
+        for (Node node : adjList.keySet()) {
             distances.put(node, Double.MAX_VALUE);
         }
-        // set start point as 0
-        // add it into the distance map
-        // add it into the priority queue, as well
+       
         distances.put(start, 0.0);      
         pq.insert(new NodeDistance(start, 0.0), 0.0);
 
-        
         while (!pq.isEmpty()) {
-        	//removeBest method is used to get the shortest distance from the priority queue          
             NodeDistance current = pq.removeBest();
 
-            // if the current distance (the shortest distance) points to the end, this is the result
             if (current.node.equals(end)) {
                 return current.distance;
             }
             
-            // create new distance = current distance + edge weight
             for (Edge edge : adjList.getOrDefault(current.node, new MyArrayList<>())) {
-                double newDist = current.distance + edge.weight;
+                Node neighbor = edge.getTo();
+                double newDist = current.distance + edge.getWeight();
 
-            // if so, update the shortest distance
-                if (newDist < distances.get(edge.target)) {
-                    distances.put(edge.target, newDist);
-                   
-                    pq.insert(new NodeDistance(edge.target, newDist), newDist);
+                if (newDist < distances.get(neighbor)) {
+                    distances.put(neighbor, newDist);
+                    pq.insert(new NodeDistance(neighbor, newDist), newDist);
                 }
             }
         }
