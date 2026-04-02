@@ -1,12 +1,22 @@
 package Graph;
 
 import Parking.Coordinate;
+import Parking.ParkingData;
+import Parking.Spot;
 
 public class test {
 	public static void main(String[] args) {
-		Coordinate c1 = new Coordinate(1, 1);
-		Coordinate c2 = new Coordinate(2, 1);
+		ParkingData data = new ParkingData();
 
-		System.out.println(c1.distanceTo(c2));
+	    Spot bestSpot = data.findNearestAvailableSpot("Fenway Park");
+
+	    if (bestSpot != null) {
+	        double dist = data.getDistanceToSpot("Fenway Park", bestSpot);
+
+	        System.out.println("Best spot: " + bestSpot);
+	        System.out.println("Distance: " + dist);
+	    } else {
+	        System.out.println("No available spot found.");
+	    }
 	}
 }

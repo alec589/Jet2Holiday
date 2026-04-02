@@ -3,12 +3,12 @@ package Parking;
 import Graph.Node;
 import Graph.NodeType;
 
-public class Road {
+public class RoadNode {
 	private String name;
     private Coordinate coordinate;
     private Node node;
 
-    public Road(String name, Coordinate coordinate) {
+    public RoadNode(String name, Coordinate coordinate) {
         this.name = name;
         this.coordinate = coordinate;
     }

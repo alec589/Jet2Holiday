@@ -20,4 +20,6 @@ public interface MapInterface<K, V> {
     public Iterable<K> keySet();           
 
     public V getOrDefault(K key, V defaultValue); 
+    
+    public Iterable<V> values();
 }

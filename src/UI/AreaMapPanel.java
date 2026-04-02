@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.BasicStroke;
+import Parking.Destination;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ public class AreaMapPanel extends JPanel{
 
 	private ListInterface<Spot> spots;
     private Spot recommendedSpot;
+    private ListInterface<Destination> destinations;
 
     public AreaMapPanel(String areaName) {
         this.areaName = areaName;
@@ -44,6 +46,12 @@ public class AreaMapPanel extends JPanel{
                 drawSpot(g, spot);
             }
         }
+        
+        if (destinations != null) {
+            for (Destination destination : destinations) {
+                drawDestination(g, destination);
+            }
+        }
     }
 
     private void drawRoads(Graphics g) {
@@ -57,15 +65,16 @@ public class AreaMapPanel extends JPanel{
     }
 
     private void drawSpot(Graphics g, Spot spot) {
-    	int x = spot.getX();
-        int y = spot.getY();
+        int x = spot.getCoordinate().getX();
+        int y = spot.getCoordinate().getY();
 
-        int spotWidth = 130;
-        int spotHeight = 230;
+        int spotWidth = 60;
+        int spotHeight = 40;
 
-        boolean isRecommended = recommendedSpot != null 
-        	    && spot.getId().equals(recommendedSpot.getId());
-        
+        boolean isRecommended = recommendedSpot != null
+                && spot.getSpotId().equals(recommendedSpot.getSpotId());
+
+        // 颜色逻辑
         if (isRecommended) {
             g.setColor(Color.BLUE);
         } else if (spot.isOccupied()) {
@@ -73,21 +82,53 @@ public class AreaMapPanel extends JPanel{
         } else {
             g.setColor(Color.GREEN);
         }
+
         g.fillRect(x, y, spotWidth, spotHeight);
-        
+
+        // 边框
         g.setColor(Color.DARK_GRAY);
         g.drawRect(x, y, spotWidth, spotHeight);
 
+        // 文字颜色
         if (isRecommended) {
             g.setColor(Color.WHITE);
         } else {
             g.setColor(Color.BLACK);
         }
 
-        g.setFont(new Font("Arial", Font.BOLD, 14));
-        g.drawString(spot.getId(), x + 35, y + 52);
-        
+        g.setFont(new Font("Arial", Font.BOLD, 10));
+
+        // ID
+        g.drawString(spot.getSpotId(), x + 4, y + 12);
+
+        // 状态
         String status = spot.isOccupied() ? "Occupied" : "Available";
-        g.drawString(status, x+33, y+220);
+        g.drawString(status, x + 4, y + 24);
+
+        // 价格
+        g.drawString("$" + String.format("%.2f", spot.getPrice()), x + 4, y + 36);
     }
+    
+    public void setDestinations(ListInterface<Destination> destinations) {
+        this.destinations = destinations;
+        repaint();
+    }
+    
+    private void drawDestination(Graphics g, Destination destination) {
+        int x = destination.getCoordinate().getX();
+        int y = destination.getCoordinate().getY();
+
+        int width = 110;
+        int height = 35;
+
+        g.setColor(new Color(255, 200, 0)); // 黄橙色
+        g.fillRoundRect(x, y, width, height, 10, 10);
+
+        g.setColor(Color.BLACK);
+        g.drawRoundRect(x, y, width, height, 10, 10);
+
+        g.setFont(new Font("Arial", Font.BOLD, 10));
+        g.drawString(destination.getName(), x + 6, y + 20);
+    }
+    
 }

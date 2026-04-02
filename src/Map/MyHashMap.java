@@ -140,4 +140,20 @@ public class MyHashMap<K, V> implements MapInterface<K, V> {
         }
         return value;
     }
+    
+    @Override
+    public Iterable<V> values() {
+        MyArrayList<V> values = new MyArrayList<>();
+
+        for (int i = 0; i < table.length; i++) {
+            Entry<K, V> current = table[i];
+
+            while (current != null) {
+                values.add(current.value);
+                current = current.next;
+            }
+        }
+
+        return values;
+    }
 }

@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import List.ListInterface;
+import Parking.AreaType;
 import Parking.ParkingData;
 import Parking.Spot;
 
@@ -152,7 +153,7 @@ public class AdminPage extends JFrame {
             Spot last = undoStack.pop();
             last.setOccupied(!last.isOccupied()); // Reverse status
             refreshTableData();
-            JOptionPane.showMessageDialog(null, "Undo successful for " + last.getId());
+            JOptionPane.showMessageDialog(null, "Undo successful for " + last.getSpotId());
         });
         contentPane.add(btnUndo);
 
@@ -171,10 +172,11 @@ public class AdminPage extends JFrame {
     private void refreshTableData() {
         tableModel.setRowCount(0);
         String selectedArea = (String) areaComboBox.getSelectedItem();
+        AreaType area = AreaType.valueOf(selectedArea);
         
-        ListInterface<Spot> spots = parkingData.getSpotsByArea(selectedArea);
+        ListInterface<Spot> spots = parkingData.getSpotsByArea(area);
         for (Spot s : spots) {
-            Object[] row = {s.getId(), s.getArea(), s.isOccupied() ? "Occupied" : "Available", String.format("%.2f", s.getPricePerHour())};
+            Object[] row = {s.getSpotId(), s.getArea(), s.isOccupied() ? "Occupied" : "Available", String.format("%.2f", s.getPrice())};
             tableModel.addRow(row);
         }
     }

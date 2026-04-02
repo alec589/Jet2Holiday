@@ -61,4 +61,8 @@ public class Spot {
                ", area=" + area +
                "}";
     }
+    
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

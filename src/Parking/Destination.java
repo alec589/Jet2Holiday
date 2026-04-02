@@ -7,10 +7,12 @@ public class Destination {
 	private String name;
 	private Node node;
     private Coordinate coordinate;  // each destination has a coordinate
+    private AreaType area;
 
-    public Destination(String name, Coordinate coordinate) {
+    public Destination(String name, Coordinate coordinate, AreaType area) {
         this.name = name;
         this.coordinate = coordinate;
+        this.area = area;
     }
 
     public String getName() {
@@ -19,6 +21,10 @@ public class Destination {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+    
+    public AreaType getArea() {
+        return area;
     }
 
     // a destination can become a node
@@ -33,6 +39,7 @@ public class Destination {
     public String toString() {
         return "Destination{name='" + name +
                "', coordinate=(" + coordinate.getX() + "," + coordinate.getY() + ")" +
+               ", area=" + area +
                "}";
     }
     
