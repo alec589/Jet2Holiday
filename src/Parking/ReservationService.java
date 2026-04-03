@@ -7,7 +7,7 @@ import Stack.MyStack;
 
 public class ReservationService {
 	//store the current valid reservation 
-    private MapInterface<String, Reservation> activeReservations = new MyHashMap<>();
+    private MapInterface<String, Reservation> currenteReservations = new MyHashMap<>();
     //"Recent Operations" in the reservation History
     private MyStack<Reservation> undoStack = new MyStack<>();
 
@@ -17,10 +17,10 @@ public class ReservationService {
 
         if (user.isBlacklisted()) return false;
         if (spot.isOccupied()) return false;
-        if (activeReservations.containsKey(spot.getSpotId())) return false;
+        if (currenteReservations.containsKey(spot.getSpotId())) return false;
 
         Reservation r = new Reservation(spot, user);
-        activeReservations.put(spot.getSpotId(), r);
+        currenteReservations.put(spot.getSpotId(), r);
         undoStack.push(r);
 
         spot.setOccupied(true);
@@ -30,7 +30,7 @@ public class ReservationService {
     public boolean checkIn(String spotId) {
         cleanupExpiredReservations();
 
-        Reservation r = activeReservations.get(spotId);
+        Reservation r = currenteReservations.get(spotId);
         if (r == null) return false;
 
         r.checkIn();
@@ -38,11 +38,11 @@ public class ReservationService {
     }
 
     public boolean cancelReservation(String spotId) {
-        Reservation r = activeReservations.get(spotId);
+        Reservation r = currenteReservations.get(spotId);
         if (r == null) return false;
 
         r.getSpot().setOccupied(false);
-        activeReservations.remove(spotId);
+        currenteReservations.remove(spotId);
         return true;
     }
 
@@ -50,19 +50,19 @@ public class ReservationService {
     public void cleanupExpiredReservations() {
         MyArrayList<String> expiredIds = new MyArrayList<>();
 
-        for (String spotId : activeReservations.keySet()) {
-            Reservation r = activeReservations.get(spotId);
+        for (String spotId : currenteReservations.keySet()) {
+            Reservation r = currenteReservations.get(spotId);
             if (r != null && r.isExpired()) {
                 expiredIds.add(spotId);
             }
         }
 
         for (String spotId : expiredIds) {
-            Reservation r = activeReservations.get(spotId);
+            Reservation r = currenteReservations.get(spotId);
             if (r != null) {
                 r.getSpot().setOccupied(false);
                 r.getUser().addMissedReservation();
-                activeReservations.remove(spotId);
+                currenteReservations.remove(spotId);
             }
         }
     }
@@ -73,17 +73,17 @@ public class ReservationService {
         Reservation last = undoStack.pop();
         String spotId = last.getSpot().getSpotId();
 
-        Reservation current = activeReservations.get(spotId);
+        Reservation current = currenteReservations.get(spotId);
         if (current == null) return false;
         if (current.isCheckedIn()) return false; // Once checked in, it is not possible to cancel.
 
         current.getSpot().setOccupied(false);
-        activeReservations.remove(spotId);
+        currenteReservations.remove(spotId);
         return true;
     }
 
     public Reservation getReservation(String spotId) {
         cleanupExpiredReservations();
-        return activeReservations.get(spotId);
+        return currenteReservations.get(spotId);
     }
 }

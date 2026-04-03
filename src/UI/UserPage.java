@@ -10,6 +10,7 @@ import Graph.MyGraph;
 import Parking.AreaType;
 import Parking.ParkingData;
 import Parking.RecommendationService;
+import Parking.Reservation;
 import Parking.ReservationService;
 import Parking.Spot;
 import Parking.UserAccount;
@@ -27,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import java.awt.GridLayout;
 import java.util.Collection;
@@ -77,6 +79,10 @@ public class UserPage extends JFrame {
     private Spot recommendedSpot;
     private JButton btnNewButton_1;
     private JButton btnNewButton_2;
+    
+    private JLabel timerLabel;
+    private Timer countdownTimer;
+    private Spot reservedSpot;
     
     
 	public UserPage(UserAccount user, ReservationService service,ParkingData sharedData) {
@@ -153,7 +159,85 @@ public class UserPage extends JFrame {
 		resultLabel = new JLabel("Please choose a destination.");
 		resultLabel.setBounds(702, 54, 300, 16);
 		contentPane.add(resultLabel);
+		// Reservation Buttons
+		JButton reserveButton = new JButton("Reserve");
+		reserveButton.setBounds(120, 110, 120, 30);
+		contentPane.add(reserveButton);
+
+		JButton checkInButton = new JButton("Check In");
+		checkInButton.setBounds(260, 110, 120, 30);
+		contentPane.add(checkInButton);
+
+		JButton undoButton = new JButton("Undo");
+		undoButton.setBounds(400, 110, 120, 30);
+		contentPane.add(undoButton);
+		// Reservation Timer Display
+
+		timerLabel = new JLabel("No current reservation");
+		timerLabel.setBounds(560, 115, 250, 20);
+		contentPane.add(timerLabel);
 		
+		// Handle reservation action
+		reserveButton.addActionListener(e -> {
+		    reservationService.cleanupExpiredReservations();
+
+		    if (recommendedSpot == null) {
+		        javax.swing.JOptionPane.showMessageDialog(null, "Please recommend a spot first.");
+		        return;
+		    }
+
+		    boolean success = reservationService.reserve(user, recommendedSpot);
+
+		    if (!success) {
+		        javax.swing.JOptionPane.showMessageDialog(null, "Reservation failed.");
+		        refreshAreaPanels();
+		        return;
+		    }
+
+		    reservedSpot = recommendedSpot;
+		    javax.swing.JOptionPane.showMessageDialog(null,
+		        "Reservation successful for " + reservedSpot.getSpotId());
+
+		    startCountdown();
+		    refreshAreaPanels();
+		});
+		
+		// Handle check-in
+		checkInButton.addActionListener(e -> {
+		    reservationService.cleanupExpiredReservations();
+
+		    if (reservedSpot == null) {
+		        javax.swing.JOptionPane.showMessageDialog(null, "No active reservation.");
+		        return;
+		    }
+
+		    boolean success = reservationService.checkIn(reservedSpot.getSpotId());
+
+		    if (success) {
+		        timerLabel.setText("Checked in successfully.");
+		        stopCountdown();
+		        javax.swing.JOptionPane.showMessageDialog(null, "Check-in successful.");
+		    } else {
+		        javax.swing.JOptionPane.showMessageDialog(null, "Check-in failed.");
+		    }
+
+		    refreshAreaPanels();
+		});
+		// Handle undo (last reservation only)
+		undoButton.addActionListener(e -> {
+		    boolean success = reservationService.undoLastReservation();
+
+		    if (success) {
+		        reservedSpot = null;
+		        stopCountdown();
+		        timerLabel.setText("Reservation undone.");
+		        javax.swing.JOptionPane.showMessageDialog(null, "Undo successful.");
+		    } else {
+		        javax.swing.JOptionPane.showMessageDialog(null, "Nothing to undo.");
+		    }
+
+		    refreshAreaPanels();
+		});
 		// User Preference Slider
 		JLabel prefLabel = new JLabel("Preference:");
 		prefLabel.setBounds(274, 55, 100, 16);
@@ -237,8 +321,57 @@ public class UserPage extends JFrame {
 		graph = parkingData.buildGraph();
         recommendationService = new RecommendationService(graph, parkingData);
     }
+// Start reservation countdown (10 minutes)
+	private void startCountdown() {
+	    stopCountdown();
 
+	    countdownTimer = new javax.swing.Timer(1000, e -> {
+	        if (reservedSpot == null) {
+	            timerLabel.setText("No active reservation");
+	            stopCountdown();
+	            return;
+	        }
 
+	        Reservation r = reservationService.getReservation(reservedSpot.getSpotId());
+
+	        if (r == null) {
+	            timerLabel.setText("Reservation expired or cancelled.");
+	            reservedSpot = null;
+	            stopCountdown();
+	            refreshAreaPanels();
+	            return;
+	        }
+
+	        if (r.isCheckedIn()) {
+	            timerLabel.setText("Checked in successfully.");
+	            stopCountdown();
+	            return;
+	        }
+
+	        long remaining = r.getRemainingTimeMillis();
+	        long minutes = remaining / 60000;
+	        long seconds = (remaining % 60000) / 1000;
+
+	        timerLabel.setText(String.format("Time left: %02d:%02d", minutes, seconds));
+
+	        if (remaining <= 0) {
+	            reservationService.cleanupExpiredReservations();
+	            timerLabel.setText("Reservation expired.");
+	            reservedSpot = null;
+	            stopCountdown();
+	            refreshAreaPanels();
+	        }
+	    });
+
+	    countdownTimer.start();
+	}
+	// Stop countdown timer
+	private void stopCountdown() {
+	    if (countdownTimer != null) {
+	        countdownTimer.stop();
+	        countdownTimer = null;
+	    }
+	}
 	private void refreshAreaPanels() {
 		
 		System.out.println("BACKBAY spots:");
