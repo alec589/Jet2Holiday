@@ -10,7 +10,9 @@ import Graph.MyGraph;
 import Parking.AreaType;
 import Parking.ParkingData;
 import Parking.RecommendationService;
+import Parking.ReservationService;
 import Parking.Spot;
+import Parking.UserAccount;
 
 import javax.swing.JLabel;
 
@@ -54,6 +56,8 @@ public class UserPage extends JFrame {
 	 * Create the frame.
 	 */
 	private ParkingData parkingData;
+	private ReservationService reservationService;
+	private UserAccount user;
 	private Stack<Spot> historyStack = new Stack<>();
     private RecommendationService recommendationService;
     private MyGraph graph;
@@ -75,8 +79,10 @@ public class UserPage extends JFrame {
     private JButton btnNewButton_2;
     
     
-	public UserPage(ParkingData sharedData) {
+	public UserPage(UserAccount user, ReservationService service,ParkingData sharedData) {
 		this.parkingData = sharedData;
+		this.user = user;
+		this.reservationService = service;
 		initializeUI();
 		initializeData();
 		refreshAreaPanels();

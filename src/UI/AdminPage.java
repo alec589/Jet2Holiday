@@ -171,7 +171,7 @@ public class AdminPage extends JFrame {
     private void refreshTableData() {
         tableModel.setRowCount(0);
         String selectedArea = (String) areaComboBox.getSelectedItem();
-        AreaType area = AreaType.valueOf(selectedArea);
+        AreaType area = AreaType.valueOf(selectedArea.toUpperCase());
         
         ListInterface<Spot> spots = parkingData.getSpotsByArea(area);
         for (Spot s : spots) {
