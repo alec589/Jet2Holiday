@@ -35,6 +35,7 @@ public class LoginPage extends JFrame {
     private static MapInterface<String, UserAccount> users = new MyHashMap<>();
     private static ReservationService reservationService = new ReservationService();
     private static ParkingData sharedData = new ParkingData();
+    
     /**
      * Launch the application.
      */

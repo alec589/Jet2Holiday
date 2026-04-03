@@ -398,6 +398,7 @@ public class UserPage extends JFrame {
         newtonPanel.setDestinations(parkingData.getDestinationsByArea(AreaType.NEWTON));
 	}
 	
+	
 	private void refreshOneArea(JPanel panel, AreaType area) {
         panel.removeAll();
 
