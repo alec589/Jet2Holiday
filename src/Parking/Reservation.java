@@ -6,7 +6,7 @@ public class Reservation {
     private long startTime;
     private boolean checkedIn;
 
-    private static final long TIME_LIMIT = 10 * 60 * 1000; // 10分钟
+    private static final long TIME_LIMIT = 10 * 60 * 1000; // 10min
 
     public Reservation(Spot spot, UserAccount user) {
         this.spot = spot;
@@ -14,7 +14,7 @@ public class Reservation {
         this.startTime = System.currentTimeMillis();
         this.checkedIn = false;
     }
-
+//no checkIn and exceed timelimit
     public boolean isExpired() {
         long now = System.currentTimeMillis();
         return !checkedIn && (now - startTime > TIME_LIMIT);
@@ -34,5 +34,13 @@ public class Reservation {
 
     public UserAccount getUser() {
         return user;
+    }
+    public long getStartTime() {
+        return startTime;
+    }
+//get remaining time （ms）
+    public long getRemainingTimeMillis() {
+        long remaining = TIME_LIMIT - (System.currentTimeMillis() - startTime);
+        return Math.max(0, remaining);
     }
 }
