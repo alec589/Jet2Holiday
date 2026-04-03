@@ -10,7 +10,7 @@ import Map.MapInterface;
 import Map.MyHashMap;
 
 public class ParkingData {
-	private MapInterface<String, Spot> allSpots;
+    private MapInterface<String, Spot> allSpots;
     private MapInterface<String, Destination> allDestinations;
     private MapInterface<String, RoadNode> allRoadNodes;
 
@@ -47,13 +47,13 @@ public class ParkingData {
                 int x;
                 int y;
 
-                if (i < 6) {
-                    x = 50 + i * 120;
-                    y = 80;
-                } else {
-                    x = 50 + (i - 6) * 120;
-                    y = 150;
-                }
+                int[][] positions = {
+                    {50, 80}, {200, 120}, {350, 85}, {500, 75}, {650, 55}, {800, 70},
+                    {50, 320}, {200, 320}, {350, 335}, {500, 360}, {650, 320}, {800, 355}
+                };
+
+                x = positions[i][0];
+                y = positions[i][1];
 
                 Spot spot = new Spot(
                     id,
@@ -69,63 +69,68 @@ public class ParkingData {
     }
 
     private void initializeDestinations() {
-    	// BACKBAY
+        // BACKBAY
         allDestinations.put("Prudential Center",
-            new Destination("Prudential Center", new Coordinate(760, 80), AreaType.BACKBAY));
+            new Destination("Prudential Center", new Coordinate(200, 50), AreaType.BACKBAY));
+
         allDestinations.put("Copley Square",
-            new Destination("Copley Square", new Coordinate(760, 140), AreaType.BACKBAY));
+            new Destination("Copley Square", new Coordinate(600, 170), AreaType.BACKBAY));
+
         allDestinations.put("Newbury Street",
-            new Destination("Newbury Street", new Coordinate(760, 200), AreaType.BACKBAY));
+            new Destination("Newbury Street", new Coordinate(500, 300), AreaType.BACKBAY));
 
         // FENWAY
         allDestinations.put("Fenway Park",
-            new Destination("Fenway Park", new Coordinate(760, 80), AreaType.FENWAY));
+            new Destination("Fenway Park", new Coordinate(200, 50), AreaType.FENWAY));
         allDestinations.put("Museum of Fine Arts",
-            new Destination("Museum of Fine Arts", new Coordinate(760, 140), AreaType.FENWAY));
+            new Destination("Museum of Fine Arts", new Coordinate(600, 170), AreaType.FENWAY));
         allDestinations.put("Northeastern University",
-            new Destination("Northeastern University", new Coordinate(760, 200), AreaType.FENWAY));
+            new Destination("Northeastern University", new Coordinate(500, 300), AreaType.FENWAY));
 
         // DOWNTOWN
         allDestinations.put("Boston Common",
-            new Destination("Boston Common", new Coordinate(760, 80), AreaType.DOWNTOWN));
+            new Destination("Boston Common", new Coordinate(200, 50), AreaType.DOWNTOWN));
         allDestinations.put("Faneuil Hall",
-            new Destination("Faneuil Hall", new Coordinate(760, 140), AreaType.DOWNTOWN));
+            new Destination("Faneuil Hall", new Coordinate(600, 170), AreaType.DOWNTOWN));
         allDestinations.put("State Street Office",
-            new Destination("State Street Office", new Coordinate(760, 200), AreaType.DOWNTOWN));
+            new Destination("State Street Office", new Coordinate(500, 300), AreaType.DOWNTOWN));
 
         // SEAPORT
         allDestinations.put("Seaport World Trade Center",
-            new Destination("Seaport World Trade Center", new Coordinate(760, 80), AreaType.SEAPORT));
+            new Destination("Seaport World Trade Center", new Coordinate(200, 50), AreaType.SEAPORT));
         allDestinations.put("ICA Museum",
-            new Destination("ICA Museum", new Coordinate(760, 140), AreaType.SEAPORT));
+            new Destination("ICA Museum", new Coordinate(600, 170), AreaType.SEAPORT));
         allDestinations.put("Harborwalk",
-            new Destination("Harborwalk", new Coordinate(760, 200), AreaType.SEAPORT));
+            new Destination("Harborwalk", new Coordinate(500, 300), AreaType.SEAPORT));
 
         // NEWTON
         allDestinations.put("Newton Centre",
-            new Destination("Newton Centre", new Coordinate(760, 80), AreaType.NEWTON));
+            new Destination("Newton Centre", new Coordinate(200, 50), AreaType.NEWTON));
         allDestinations.put("Boston College",
-            new Destination("Boston College", new Coordinate(760, 140), AreaType.NEWTON));
+            new Destination("Boston College", new Coordinate(600, 170), AreaType.NEWTON));
         allDestinations.put("Newton Library",
-            new Destination("Newton Library", new Coordinate(760, 200), AreaType.NEWTON));
-        
+            new Destination("Newton Library", new Coordinate(500, 300), AreaType.NEWTON));
     }
 
     private void initializeRoadNodes() {
-    	allRoadNodes.put("BACKBAY",
-    	        new RoadNode("BackBay Main Road", new Coordinate(450, 280)));
+        initializeAreaRoadNodes("BACKBAY");
+        initializeAreaRoadNodes("FENWAY");
+        initializeAreaRoadNodes("DOWNTOWN");
+        initializeAreaRoadNodes("SEAPORT");
+        initializeAreaRoadNodes("NEWTON");
+    }
 
-    	    allRoadNodes.put("FENWAY",
-    	        new RoadNode("Fenway Main Road", new Coordinate(450, 280)));
-
-    	    allRoadNodes.put("DOWNTOWN",
-    	        new RoadNode("Downtown Main Road", new Coordinate(450, 280)));
-
-    	    allRoadNodes.put("SEAPORT",
-    	        new RoadNode("Seaport Main Road", new Coordinate(450, 280)));
-
-    	    allRoadNodes.put("NEWTON",
-    	        new RoadNode("Newton Main Road", new Coordinate(450, 280)));
+    private void initializeAreaRoadNodes(String areaKey) {
+        allRoadNodes.put(areaKey + "_R1",
+            new RoadNode(areaKey + " Main Road R1", new Coordinate(100, 280)));
+        allRoadNodes.put(areaKey + "_R2",
+            new RoadNode(areaKey + " Main Road R2", new Coordinate(250, 280)));
+        allRoadNodes.put(areaKey + "_R3",
+            new RoadNode(areaKey + " Main Road R3", new Coordinate(400, 280)));
+        allRoadNodes.put(areaKey + "_R4",
+            new RoadNode(areaKey + " Main Road R4", new Coordinate(550, 280)));
+        allRoadNodes.put(areaKey + "_R5",
+            new RoadNode(areaKey + " Main Road R5", new Coordinate(700, 280)));
     }
 
     public MapInterface<String, Spot> getAllSpots() {
@@ -157,7 +162,7 @@ public class ParkingData {
 
         return result;
     }
-    
+
     public ListInterface<Destination> getDestinationsByArea(AreaType area) {
         ListInterface<Destination> result = new MyArrayList<>();
 
@@ -170,74 +175,156 @@ public class ParkingData {
         return result;
     }
 
+    private void connectMainRoads(MyGraph<Node> graph) {
+        connectRoadChain(graph, "BACKBAY");
+        connectRoadChain(graph, "FENWAY");
+        connectRoadChain(graph, "DOWNTOWN");
+        connectRoadChain(graph, "SEAPORT");
+        connectRoadChain(graph, "NEWTON");
+    }
+
+    private void connectRoadChain(MyGraph<Node> graph, String areaKey) {
+        connectRoadNodes(graph, areaKey + "_R1", areaKey + "_R2");
+        connectRoadNodes(graph, areaKey + "_R2", areaKey + "_R3");
+        connectRoadNodes(graph, areaKey + "_R3", areaKey + "_R4");
+        connectRoadNodes(graph, areaKey + "_R4", areaKey + "_R5");
+    }
+
+    private void connectRoadNodes(MyGraph<Node> graph, String key1, String key2) {
+        RoadNode r1 = allRoadNodes.get(key1);
+        RoadNode r2 = allRoadNodes.get(key2);
+
+        double dist = r1.getCoordinate().distanceTo(r2.getCoordinate());
+        graph.addEdge(r1.toNode(), r2.toNode(), dist);
+    }
+
     private void connectSpotsToMainRoad(MyGraph<Node> graph) {
         for (Spot spot : allSpots.values()) {
-
-            RoadNode road = allRoadNodes.get(spot.getArea().name());
-
-            double dist = spot.getCoordinate().distanceTo(road.getCoordinate());
-
-            graph.addEdge(spot.toNode(), road.toNode(), dist);
+            RoadNode nearestRoad = findNearestRoadNode(spot.getArea(), spot.getCoordinate());
+            double dist = spot.getCoordinate().distanceTo(nearestRoad.getCoordinate());
+            graph.addEdge(spot.toNode(), nearestRoad.toNode(), dist);
         }
     }
 
     private void connectDestinationsToMainRoad(MyGraph<Node> graph) {
         for (Destination d : allDestinations.values()) {
-
-            RoadNode road = allRoadNodes.get(d.getArea().name());
-
-            double dist = d.getCoordinate().distanceTo(road.getCoordinate());
-
-            graph.addEdge(d.toNode(), road.toNode(), dist);
+            RoadNode nearestRoad = findNearestRoadNode(d.getArea(), d.getCoordinate());
+            double dist = d.getCoordinate().distanceTo(nearestRoad.getCoordinate());
+            graph.addEdge(d.toNode(), nearestRoad.toNode(), dist);
         }
     }
 
-    private void connectMainRoads(MyGraph<Node> graph) {
-        connect(graph, "BACKBAY", "FENWAY");
-        connect(graph, "FENWAY", "DOWNTOWN");
-        connect(graph, "DOWNTOWN", "SEAPORT");
-        connect(graph, "SEAPORT", "NEWTON");
+    private RoadNode findNearestRoadNode(AreaType area, Coordinate coordinate) {
+        RoadNode best = null;
+        double bestDist = Double.MAX_VALUE;
+
+        for (int i = 1; i <= 5; i++) {
+            String key = area.name() + "_R" + i;
+            RoadNode road = allRoadNodes.get(key);
+            double dist = coordinate.distanceTo(road.getCoordinate());
+
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = road;
+            }
+        }
+
+        return best;
     }
 
-    private void connect(MyGraph<Node> graph, String a, String b) {
-        RoadNode r1 = allRoadNodes.get(a);
-        RoadNode r2 = allRoadNodes.get(b);
-
-        double dist = r1.getCoordinate().distanceTo(r2.getCoordinate());
-
-        graph.addEdge(r1.toNode(), r2.toNode(), dist);
+    private void connectSameSideNeighbors(MyGraph<Node> graph) {
+        connectAreaSameSide(graph, AreaType.BACKBAY);
+        connectAreaSameSide(graph, AreaType.FENWAY);
+        connectAreaSameSide(graph, AreaType.DOWNTOWN);
+        connectAreaSameSide(graph, AreaType.SEAPORT);
+        connectAreaSameSide(graph, AreaType.NEWTON);
     }
-    
+
+    private void connectAreaSameSide(MyGraph<Node> graph, AreaType area) {
+        ListInterface<Node> topNodes = new MyArrayList<>();
+        ListInterface<Node> bottomNodes = new MyArrayList<>();
+
+        for (Spot spot : allSpots.values()) {
+            if (spot.getArea() == area) {
+                if (spot.getCoordinate().getY() < 280) {
+                    topNodes.add(spot.toNode());
+                } else {
+                    bottomNodes.add(spot.toNode());
+                }
+            }
+        }
+
+        for (Destination d : allDestinations.values()) {
+            if (d.getArea() == area) {
+                if (d.getCoordinate().getY() < 280) {
+                    topNodes.add(d.toNode());
+                } else {
+                    bottomNodes.add(d.toNode());
+                }
+            }
+        }
+
+        sortNodesByX(topNodes);
+        sortNodesByX(bottomNodes);
+
+        connectNeighborList(graph, topNodes);
+        connectNeighborList(graph, bottomNodes);
+    }
+
+    private void sortNodesByX(ListInterface<Node> nodes) {
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = 0; j < nodes.size() - 1 - i; j++) {
+                Node a = nodes.get(j);
+                Node b = nodes.get(j + 1);
+
+                Coordinate ca = a.getCoordinate();
+                Coordinate cb = b.getCoordinate();
+
+                if (ca.getX() > cb.getX()) {
+                    Node temp = a;
+                    nodes.set(j, b);
+                    nodes.set(j + 1, temp);
+                }
+            }
+        }
+    }
+
+    private void connectNeighborList(MyGraph<Node> graph, ListInterface<Node> nodes) {
+        for (int i = 0; i < nodes.size() - 1; i++) {
+            Node a = nodes.get(i);
+            Node b = nodes.get(i + 1);
+
+            Coordinate ca = a.getCoordinate();
+            Coordinate cb = b.getCoordinate();
+
+            double dist = ca.distanceTo(cb);
+            graph.addEdge(a, b, dist);
+        }
+    }
+
     public MyGraph<Node> buildGraph() {
         MyGraph<Node> graph = new MyGraph<>();
 
-        // 1. add all spot nodes
         for (Spot spot : allSpots.values()) {
             graph.addNode(spot.toNode());
         }
 
-        // 2. add all destination nodes
         for (Destination d : allDestinations.values()) {
             graph.addNode(d.toNode());
         }
 
-        // 3. add all road nodes
         for (RoadNode road : allRoadNodes.values()) {
             graph.addNode(road.toNode());
         }
 
-        // 4. connect roads
         connectMainRoads(graph);
-
-        // 5. connect spots to their area's main road
         connectSpotsToMainRoad(graph);
-
-        // 6. connect destinations to their area's main road
         connectDestinationsToMainRoad(graph);
+        connectSameSideNeighbors(graph);
 
         return graph;
     }
-    
+
     public Spot findNearestAvailableSpot(String destinationName) {
         Destination destination = allDestinations.get(destinationName);
 
@@ -263,7 +350,7 @@ public class ParkingData {
 
         return bestSpot;
     }
-    
+
     public double getDistanceToSpot(String destinationName, Spot spot) {
         Destination destination = allDestinations.get(destinationName);
 
@@ -274,14 +361,12 @@ public class ParkingData {
         MyGraph<Node> graph = buildGraph();
         return graph.shortestDistance(destination.toNode(), spot.toNode());
     }
-    
+
     public Destination getDestinationByName(String name) {
         return allDestinations.get(name);
     }
-    
+
     public MyGraph<Node> getGraph() {
         return buildGraph();
     }
-
 }
-
