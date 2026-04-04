@@ -1,75 +1,180 @@
 package UI;
 
-import javax.swing.*;
+import java.awt.Font;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.Timer;
 
 import List.ListInterface;
-
-import java.awt.event.*;
-import Parking.*;
+import Parking.Reservation;
+import Parking.ReservationService;
+import Parking.Spot;
+import Parking.UserAccount;
 
 public class MyReservationsPage extends JFrame {
 
-    private JList<String> listUI;
+    private static final long serialVersionUID = 1L;
+
+    private UserAccount user;
+    private ReservationService reservationService;
+
+    private DefaultListModel<String> listModel;
+    private JList<String> reservationList;
     private ListInterface<Reservation> reservations;
 
-    public MyReservationsPage(UserAccount user, ReservationService service) {
+    private Timer refreshTimer;
+
+    public MyReservationsPage(UserAccount user, ReservationService reservationService) {
+        this.user = user;
+        this.reservationService = reservationService;
 
         setTitle("My Reservations");
-        setSize(500, 400);
+        setSize(700, 420);
+        setLocationRelativeTo(null);
         setLayout(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        reservations = service.getReservationsByUser(user);
+        initializeUI();
+        loadReservations();
+        startAutoRefresh();
+    }
 
-        DefaultListModel<String> model = new DefaultListModel<>();
+    private void initializeUI() {
+        JLabel titleLabel = new JLabel("My Reservations");
+        titleLabel.setFont(new Font("Lucida Grande", Font.BOLD, 22));
+        titleLabel.setBounds(250, 20, 220, 30);
+        add(titleLabel);
+
+        listModel = new DefaultListModel<>();
+        reservationList = new JList<>(listModel);
+        reservationList.setFont(new Font("Monospaced", Font.PLAIN, 18));
+
+        JScrollPane scrollPane = new JScrollPane(reservationList);
+        scrollPane.setBounds(40, 70, 600, 220);
+        add(scrollPane);
+
+        JButton checkInButton = new JButton("Check In");
+        checkInButton.setBounds(110, 320, 140, 35);
+        add(checkInButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBounds(280, 320, 140, 35);
+        add(cancelButton);
+
+        JButton closeButton = new JButton("Close");
+        closeButton.setBounds(450, 320, 140, 35);
+        add(closeButton);
+
+        checkInButton.addActionListener(e -> handleCheckIn());
+        cancelButton.addActionListener(e -> handleCancel());
+        closeButton.addActionListener(e -> {
+            stopAutoRefresh();
+            dispose();
+        });
+    }
+
+    private void loadReservations() {
+        reservationService.cleanupExpiredReservations();
+        reservations = reservationService.getReservationsByUser(user);
+
+        listModel.clear();
+
+        if (reservations.isEmpty()) {
+            listModel.addElement("No active reservations.");
+            return;
+        }
 
         for (int i = 0; i < reservations.size(); i++) {
             Reservation r = reservations.get(i);
             Spot s = r.getSpot();
 
             long remaining = r.getRemainingTimeMillis();
-            long min = remaining / 60000;
-            long sec = (remaining % 60000) / 1000;
+            long minutes = remaining / 60000;
+            long seconds = (remaining % 60000) / 1000;
 
-            String text = s.getSpotId() +
-                    " | " + s.getArea() +
-                    " | $" + String.format("%.2f", s.getPrice()) +
-                    " | Time Left: " + String.format("%02d:%02d", min, sec);
+            String status = r.isCheckedIn() ? "Checked In" : "Reserved";
 
-            model.addElement(text);
+            String row = String.format(
+                "%-8s | %-9s | $%-5.2f | %-10s | %02d:%02d",
+                s.getSpotId(),
+                s.getArea(),
+                s.getPrice(),
+                status,
+                minutes,
+                seconds
+            );
+
+            listModel.addElement(row);
+        }
+    }
+
+    private void handleCheckIn() {
+        if (reservations.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No reservation selected.");
+            return;
         }
 
-        listUI = new JList<>(model);
-        listUI.setBounds(20, 20, 440, 200);
-        add(listUI);
+        int index = reservationList.getSelectedIndex();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a reservation first.");
+            return;
+        }
 
-        // Check In
-        JButton checkInBtn = new JButton("Check In");
-        checkInBtn.setBounds(60, 250, 150, 30);
-        add(checkInBtn);
+        Reservation selected = reservations.get(index);
 
-        checkInBtn.addActionListener(e -> {
-            int index = listUI.getSelectedIndex();
-            if (index == -1) return;
+        if (selected.isCheckedIn()) {
+            JOptionPane.showMessageDialog(this, "This reservation has already been checked in.");
+            return;
+        }
 
-            Reservation r = reservations.get(index);
-            service.checkIn(r.getSpot().getSpotId());
+        boolean success = reservationService.checkIn(selected.getSpot().getSpotId());
 
-            JOptionPane.showMessageDialog(null, "Checked in!");
-        });
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Check-in successful.");
+            loadReservations();
+        } else {
+            JOptionPane.showMessageDialog(this, "Check-in failed.");
+        }
+    }
 
-        // Cancel
-        JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.setBounds(260, 250, 150, 30);
-        add(cancelBtn);
+    private void handleCancel() {
+        if (reservations.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No reservation selected.");
+            return;
+        }
 
-        cancelBtn.addActionListener(e -> {
-            int index = listUI.getSelectedIndex();
-            if (index == -1) return;
+        int index = reservationList.getSelectedIndex();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a reservation first.");
+            return;
+        }
 
-            Reservation r = reservations.get(index);
-            service.cancelReservation(r.getSpot().getSpotId());
+        Reservation selected = reservations.get(index);
 
-            JOptionPane.showMessageDialog(null, "Cancelled!");
-        });
+        boolean success = reservationService.cancelReservation(selected.getSpot().getSpotId());
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Reservation cancelled.");
+            loadReservations();
+        } else {
+            JOptionPane.showMessageDialog(this, "Cancel failed.");
+        }
+    }
+
+    private void startAutoRefresh() {
+        refreshTimer = new Timer(1000, e -> loadReservations());
+        refreshTimer.start();
+    }
+
+    private void stopAutoRefresh() {
+        if (refreshTimer != null) {
+            refreshTimer.stop();
+        }
     }
 }
