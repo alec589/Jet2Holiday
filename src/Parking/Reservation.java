@@ -40,6 +40,8 @@ public class Reservation {
     }
 //get remaining time （ms）
     public long getRemainingTimeMillis() {
+        if (checkedIn) return 0;  //  check-in no need countdown time
+
         long remaining = TIME_LIMIT - (System.currentTimeMillis() - startTime);
         return Math.max(0, remaining);
     }

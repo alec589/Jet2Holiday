@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,8 +16,6 @@ import Parking.RecommendationService;
 import Parking.ReservationService;
 import Parking.Spot;
 import Parking.UserAccount;
-import Parking.Reservation;
-import List.ListInterface;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,7 +34,6 @@ import java.util.Collection;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Stack;
 
 import javax.swing.JSlider;
 public class UserPage extends JFrame {
@@ -58,8 +56,7 @@ public class UserPage extends JFrame {
 	 */
 	private ParkingData parkingData;
 	private ReservationService reservationService;
-	private UserAccount user;
-	private Stack<Spot> historyStack = new Stack<>();
+	private UserAccount user;	
     private RecommendationService recommendationService;
     private MyGraph graph;
 
@@ -139,7 +136,6 @@ public class UserPage extends JFrame {
             if (recommendedSpot == null) {
                 resultLabel.setText("No available spot found.");
             } else {
-                historyStack.push(recommendedSpot);
                 resultLabel.setText(
                     "Recommended: " + recommendedSpot.getSpotId()
                     + " (" + recommendedSpot.getArea() + ")"
@@ -260,14 +256,7 @@ public class UserPage extends JFrame {
 
 		        // clean up Expired Reservations
 		        reservationService.cleanupExpiredReservations();
-
-		        ListInterface<Reservation> list = reservationService.getReservationsByUser(user);
-
-		        if (list.isEmpty()) {
-		            javax.swing.JOptionPane.showMessageDialog(null, "No reservations found!");
-		            return;
-		        }
-
+		        		      
 		        //switch panel
 		        new MyReservationsPage(user, reservationService).setVisible(true);
 		    }

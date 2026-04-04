@@ -4,15 +4,11 @@ import List.ListInterface;
 import List.MyArrayList;
 import Map.MapInterface;
 import Map.MyHashMap;
-import Stack.MyStack;
 
 public class ReservationService {
-	//store the current valid reservation 
+    // store the current valid reservations
     private MapInterface<String, Reservation> currenteReservations = new MyHashMap<>();
-    //"Recent Operations" in the reservation History
-    private MyStack<Reservation> undoStack = new MyStack<>();
 
-    
     public boolean reserve(UserAccount user, Spot spot) {
         cleanupExpiredReservations();
 
@@ -22,7 +18,6 @@ public class ReservationService {
 
         Reservation r = new Reservation(spot, user);
         currenteReservations.put(spot.getSpotId(), r);
-        undoStack.push(r);
 
         spot.setOccupied(true);
         return true;
@@ -47,7 +42,6 @@ public class ReservationService {
         return true;
     }
 
-   
     public void cleanupExpiredReservations() {
         MyArrayList<String> expiredIds = new MyArrayList<>();
 
@@ -67,7 +61,7 @@ public class ReservationService {
             }
         }
     }
-    
+
     public ListInterface<Reservation> getReservationsByUser(UserAccount user) {
         cleanupExpiredReservations();
 
@@ -82,21 +76,6 @@ public class ReservationService {
         }
 
         return result;
-    }
-    //Cancel the last Reservation
-    public boolean undoLastReservation() {
-        if (undoStack.isEmpty()) return false;
-
-        Reservation last = undoStack.pop();
-        String spotId = last.getSpot().getSpotId();
-
-        Reservation current = currenteReservations.get(spotId);
-        if (current == null) return false;
-        if (current.isCheckedIn()) return false; // Once checked in, it is not possible to cancel.
-
-        current.getSpot().setOccupied(false);
-        currenteReservations.remove(spotId);
-        return true;
     }
 
     public Reservation getReservation(String spotId) {
