@@ -19,8 +19,8 @@ import Parking.Reservation;
 import List.ListInterface;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -30,11 +30,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
-import java.awt.GridLayout;
 import java.util.Collection;
-import java.util.HashMap;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -168,21 +165,34 @@ public class UserPage extends JFrame {
 		    reservationService.cleanupExpiredReservations();
 
 		    if (recommendedSpot == null) {
-		        javax.swing.JOptionPane.showMessageDialog(null, "Please recommend a spot first.");
+		        JOptionPane.showMessageDialog(null, "Please recommend a spot first.");
+		        return;
+		    }
+
+		    if (user.isBlacklisted()) {
+		        JOptionPane.showMessageDialog(null,
+		            "You are temporarily blocked due to multiple missed reservations.");
 		        return;
 		    }
 
 		    boolean success = reservationService.reserve(user, recommendedSpot);
 
 		    if (!success) {
-		        javax.swing.JOptionPane.showMessageDialog(null, "Reservation failed.");
+		        if (recommendedSpot.isOccupied()) {
+		            JOptionPane.showMessageDialog(null,
+		                "This parking spot is no longer available.");
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Reservation failed.");
+		        }
+
 		        refreshAreaPanels();
 		        return;
 		    }
 
-		    javax.swing.JOptionPane.showMessageDialog(null,
+		    JOptionPane.showMessageDialog(null,
 		        "Reservation successful for " + recommendedSpot.getSpotId());
 
+		    recommendedSpot = null; 
 		    refreshAreaPanels();
 		});
 		
@@ -248,7 +258,7 @@ public class UserPage extends JFrame {
 		btnNewButton_2.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 
-		        // 清理过期
+		        // clean up Expired Reservations
 		        reservationService.cleanupExpiredReservations();
 
 		        ListInterface<Reservation> list = reservationService.getReservationsByUser(user);
