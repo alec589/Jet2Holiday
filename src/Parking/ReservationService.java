@@ -1,5 +1,6 @@
 package Parking;
 
+import List.ListInterface;
 import List.MyArrayList;
 import Map.MapInterface;
 import Map.MyHashMap;
@@ -65,6 +66,22 @@ public class ReservationService {
                 currenteReservations.remove(spotId);
             }
         }
+    }
+    
+    public ListInterface<Reservation> getReservationsByUser(UserAccount user) {
+        cleanupExpiredReservations();
+
+        ListInterface<Reservation> result = new MyArrayList<>();
+
+        for (String spotId : currenteReservations.keySet()) {
+            Reservation r = currenteReservations.get(spotId);
+
+            if (r != null && r.getUser().getUsername().equals(user.getUsername())) {
+                result.add(r);
+            }
+        }
+
+        return result;
     }
     //Cancel the last Reservation
     public boolean undoLastReservation() {
