@@ -46,19 +46,16 @@ public class MyReservationsPage extends JFrame {
 
     private void initUI() {
 
-        
         JLabel title = new JLabel("My Reservations");
         title.setFont(new Font("Arial", Font.BOLD, 28));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(250, 20, 400, 40);
         contentPane.add(title);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setRowSelectionAllowed(true);
 
-       
         String[] cols = {"Spot", "Area", "Price", "Status", "Time Left"};
 
         tableModel = new DefaultTableModel(cols, 0) {
+            @Override
             public boolean isCellEditable(int r, int c) {
                 return false;
             }
@@ -66,7 +63,12 @@ public class MyReservationsPage extends JFrame {
 
         table = new JTable(tableModel);
         table.setRowHeight(30);
-       //miss counts
+
+        // 这些一定要放在 table 创建之后
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false);
+
         missedLabel = new JLabel();
         missedLabel.setHorizontalAlignment(SwingConstants.CENTER);
         missedLabel.setBounds(250, 60, 400, 25);
@@ -76,14 +78,12 @@ public class MyReservationsPage extends JFrame {
         scroll.setBounds(60, 90, 760, 250);
         contentPane.add(scroll);
 
-        // Check In button
         JButton checkBtn = new JButton("Check In");
-        checkBtn.setBounds(220, 370, 160, 40);  
+        checkBtn.setBounds(220, 370, 160, 40);
         contentPane.add(checkBtn);
 
-        // Cancel button
         JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.setBounds(480, 370, 160, 40);      
+        cancelBtn.setBounds(480, 370, 160, 40);
         contentPane.add(cancelBtn);
 
         checkBtn.addActionListener(e -> checkIn());
@@ -93,11 +93,12 @@ public class MyReservationsPage extends JFrame {
     private void loadData() {
         reservationService.cleanupExpiredReservations();
         reservations = reservationService.getReservationsByUser(user);
+
         missedLabel.setText("Missed Reservations (Last 30 Days): " + user.getMissedReservationCount());
-        
+
         tableModel.setRowCount(0);
 
-        if (reservations.isEmpty()) {
+        if (reservations == null || reservations.isEmpty()) {
             return;
         }
 
@@ -106,18 +107,56 @@ public class MyReservationsPage extends JFrame {
             Spot s = r.getSpot();
 
             long remain = r.getRemainingTimeMillis();
+            if (remain < 0) {
+                remain = 0;
+            }
+
             long min = remain / 60000;
             long sec = (remain % 60000) / 1000;
 
             String status = r.isCheckedIn() ? "Checked In" : "Reserved";
 
-            tableModel.addRow(new Object[]{
+            tableModel.addRow(new Object[] {
                     s.getSpotId(),
                     s.getArea(),
                     String.format("$%.2f", s.getPrice()),
                     status,
                     String.format("%02d:%02d", min, sec)
             });
+        }
+    }
+
+    private void refreshTimeOnly() {
+        reservationService.cleanupExpiredReservations();
+        reservations = reservationService.getReservationsByUser(user);
+
+        missedLabel.setText("Missed Reservations (Last 30 Days): " + user.getMissedReservationCount());
+
+        if (reservations == null) {
+            return;
+        }
+
+        // 如果条数变了，直接整表重载一次
+        if (tableModel.getRowCount() != reservations.size()) {
+            loadData();
+            return;
+        }
+
+        for (int i = 0; i < reservations.size(); i++) {
+            Reservation r = reservations.get(i);
+
+            long remain = r.getRemainingTimeMillis();
+            if (remain < 0) {
+                remain = 0;
+            }
+
+            long min = remain / 60000;
+            long sec = (remain % 60000) / 1000;
+
+            String status = r.isCheckedIn() ? "Checked In" : "Reserved";
+
+            tableModel.setValueAt(status, i, 3);
+            tableModel.setValueAt(String.format("%02d:%02d", min, sec), i, 4);
         }
     }
 
@@ -170,25 +209,12 @@ public class MyReservationsPage extends JFrame {
         timer = new Timer(1000, e -> refreshTimeOnly());
         timer.start();
     }
-    private void refreshTimeOnly() {
-        if (reservations == null || reservations.isEmpty()) return;
 
-        for (int i = 0; i < reservations.size(); i++) {
-            Reservation r = reservations.get(i);
-
-            long remain = r.getRemainingTimeMillis();
-            long min = remain / 60000;
-            long sec = (remain % 60000) / 1000;
-
-            String status = r.isCheckedIn() ? "Checked In" : "Reserved";
-
-            tableModel.setValueAt(status, i, 3); // status列
-            tableModel.setValueAt(String.format("%02d:%02d", min, sec), i, 4); // time列
-        }
-    }
     @Override
     public void dispose() {
-        if (timer != null) timer.stop();
+        if (timer != null) {
+            timer.stop();
+        }
         super.dispose();
     }
-}
+}  
