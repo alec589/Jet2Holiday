@@ -273,11 +273,6 @@ public class UserPage extends JFrame {
 	}
 
 	private void refreshAreaPanels() {
-		
-		System.out.println("BACKBAY spots:");
-	    for (Spot s : parkingData.getSpotsByArea(AreaType.BACKBAY)) {
-	        System.out.println(s);
-	    }
 	    
 		backBayPanel.setSpots(parkingData.getSpotsByArea(AreaType.BACKBAY));
         fenwayPanel.setSpots(parkingData.getSpotsByArea(AreaType.FENWAY));

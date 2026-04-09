@@ -14,7 +14,7 @@ public class Reservation {
         this.startTime = System.currentTimeMillis();
         this.checkedIn = false;
     }
-//no checkIn and exceed timelimit
+    //no checkIn and exceed timelimit
     public boolean isExpired() {
         long now = System.currentTimeMillis();
         return !checkedIn && (now - startTime > TIME_LIMIT);
@@ -38,7 +38,7 @@ public class Reservation {
     public long getStartTime() {
         return startTime;
     }
-//get remaining time （ms）
+    //get remaining time （ms）
     public long getRemainingTimeMillis() {
         if (checkedIn) return 0;  //  check-in no need countdown time
 

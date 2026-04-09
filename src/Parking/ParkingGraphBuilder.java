@@ -40,9 +40,11 @@ public class ParkingGraphBuilder {
     // connect parking spot to the nearest road node
     private void connectSpotsToMainRoad(MyGraph<Node> graph) {
         for (Spot spot : parkingData.getAllSpots().values()) {
-            RoadNode nearestRoad = findNearestRoadNode(spot.getArea(), spot.getCoordinate());
-            double dist = spot.getCoordinate().distanceTo(nearestRoad.getCoordinate());
-            graph.addEdge(spot.toNode(), nearestRoad.toNode(), dist);
+            if (!spot.isOccupied()) {
+                RoadNode nearestRoad = findNearestRoadNode(spot.getArea(), spot.getCoordinate());
+                double dist = spot.getCoordinate().distanceTo(nearestRoad.getCoordinate());
+                graph.addEdge(spot.toNode(), nearestRoad.toNode(), dist);
+            }
         }
     }
 
@@ -158,7 +160,9 @@ public class ParkingGraphBuilder {
         MyGraph<Node> graph = new MyGraph<>();
 
         for (Spot spot : parkingData.getAllSpots().values()) {
-            graph.addNode(spot.toNode());
+            if (!spot.isOccupied()) {
+                graph.addNode(spot.toNode());
+            }
         }
 
         for (Destination d : parkingData.getAllDestinations().values()) {

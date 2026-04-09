@@ -72,6 +72,15 @@ public class RecommendationService {
 				      distanceWeight * normalizedDistance +
 				      priceWeight * normalizedPrice;
 				
+				  System.out.println(
+						    spot.getSpotId()
+						    + " | dist=" + distance
+						    + " | price=" + price
+						    + " | normDist=" + normalizedDistance
+						    + " | normPrice=" + normalizedPrice
+						    + " | score=" + score
+						);
+				  
 				  pq.insert(spot, score);
 			}
 		}

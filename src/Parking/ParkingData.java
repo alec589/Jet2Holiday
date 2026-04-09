@@ -46,7 +46,7 @@ public class ParkingData {
                 double price;
                 boolean occupied;
                 if (id.equals("BOS-101") || id.equals("BOS-102") 
-                        || id.equals("BOS-107") || id.equals("BOS-108")) {
+                        || id.equals("BOS-107") || id.equals("BOS-100")) {
                     occupied = true;
                     price = 5.0;  
                 }
@@ -54,9 +54,9 @@ public class ParkingData {
                     occupied = false;
                     price = 9.0;  
                 }
-                else if (id.equals("BOS-100")) {
+                else if (id.equals("BOS-108")) {
                     occupied = false;
-                    price = 2.0;  
+                    price = 5.0;  
                 }
                 else if (id.equals("BOS-106")) {
                     occupied = false;
@@ -67,7 +67,7 @@ public class ParkingData {
                     price = 8.5;  
                 }
                 else {
-                    price = 2.0 + (4.0 * rand.nextDouble());
+                    price = 5.0;
                     occupied = rand.nextBoolean();
                 }
 
