@@ -52,6 +52,8 @@ public class MyReservationsPage extends JFrame {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(250, 20, 400, 40);
         contentPane.add(title);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(true);
 
        
         String[] cols = {"Spot", "Area", "Price", "Status", "Time Left"};
@@ -165,10 +167,25 @@ public class MyReservationsPage extends JFrame {
     }
 
     private void startTimer() {
-        timer = new Timer(1000, e -> loadData());
+        timer = new Timer(1000, e -> refreshTimeOnly());
         timer.start();
     }
+    private void refreshTimeOnly() {
+        if (reservations == null || reservations.isEmpty()) return;
 
+        for (int i = 0; i < reservations.size(); i++) {
+            Reservation r = reservations.get(i);
+
+            long remain = r.getRemainingTimeMillis();
+            long min = remain / 60000;
+            long sec = (remain % 60000) / 1000;
+
+            String status = r.isCheckedIn() ? "Checked In" : "Reserved";
+
+            tableModel.setValueAt(status, i, 3); // status列
+            tableModel.setValueAt(String.format("%02d:%02d", min, sec), i, 4); // time列
+        }
+    }
     @Override
     public void dispose() {
         if (timer != null) timer.stop();
