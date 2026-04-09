@@ -113,11 +113,14 @@ public class AreaMapPanel extends JPanel{
     }
 
     private void drawSpot(Graphics g, Spot spot) {
-        int x = spot.getCoordinate().getX();
-        int y = spot.getCoordinate().getY();
+    	int centerX = spot.getCoordinate().getX();
+        int centerY = spot.getCoordinate().getY();
 
         int spotWidth = 100;
         int spotHeight = 150;
+        
+        int x = centerX - spotWidth / 2;
+        int y = centerY - spotHeight / 2;
 
         boolean isRecommended = recommendedSpot != null
                 && spot.getSpotId().equals(recommendedSpot.getSpotId());
@@ -158,11 +161,14 @@ public class AreaMapPanel extends JPanel{
     }
     
     private void drawDestination(Graphics g, Destination destination) {
-        int x = destination.getCoordinate().getX();
-        int y = destination.getCoordinate().getY();
+    	int centerX = destination.getCoordinate().getX();
+        int centerY = destination.getCoordinate().getY();
 
         int width = 125;
         int height = 40;
+
+        int x = centerX - width / 2;
+        int y = centerY - height / 2;
 
         g.setColor(new Color(255, 200, 0));
         g.fillRoundRect(x, y, width, height, 10, 10);

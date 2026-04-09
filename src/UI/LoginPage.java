@@ -55,7 +55,7 @@ public class LoginPage extends JFrame {
      */
     public LoginPage() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1000, 800);
+        setBounds(100, 100, 1200, 800);
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,34 +63,34 @@ public class LoginPage extends JFrame {
         contentPane.setLayout(null);
 
         JLabel titleLabel = new JLabel("Smart Parking System");
-        titleLabel.setBounds(360, 180, 340, 49);
+        titleLabel.setBounds(460, 180, 340, 49);
         titleLabel.setFont(new Font("Lucida Grande", Font.BOLD, 20));
         contentPane.add(titleLabel);
 
         JLabel userLabel = new JLabel("Username :");
         userLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-        userLabel.setBounds(260, 313, 126, 16);
+        userLabel.setBounds(360, 313, 126, 16);
         contentPane.add(userLabel);
 
         JLabel passLabel = new JLabel("Password : ");
         passLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-        passLabel.setBounds(260, 410, 109, 16);
+        passLabel.setBounds(360, 410, 109, 16);
         contentPane.add(passLabel);
 
         usernameField = new JTextField();
-        usernameField.setBounds(377, 305, 350, 30);
+        usernameField.setBounds(477, 305, 325, 30);
         contentPane.add(usernameField);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(377, 400, 350, 30);
+        passwordField.setBounds(477, 400, 324, 30);
         contentPane.add(passwordField);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(445, 529, 117, 36);
+        loginButton.setBounds(505, 529, 117, 36);
         contentPane.add(loginButton);
         
         JButton registerButton = new JButton("Register");
-        registerButton.setBounds(445, 580, 117, 36);
+        registerButton.setBounds(505, 580, 117, 36);
         contentPane.add(registerButton);
         
         loginButton.addActionListener((ActionEvent e) -> {
