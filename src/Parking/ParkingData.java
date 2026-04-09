@@ -48,8 +48,8 @@ public class ParkingData {
                 int y;
 
                 int[][] positions = {
-                    {50, 80}, {200, 120}, {350, 85}, {500, 75}, {650, 55}, {800, 70},
-                    {50, 320}, {200, 320}, {350, 335}, {500, 360}, {650, 320}, {800, 355}
+                    {30, 60}, {140, 60}, {445, 60}, {555, 60}, {860, 60}, {970, 60},
+                    {30, 300}, {190, 300}, {350, 300}, {650, 300}, {810, 300}, {970, 300}
                 };
 
                 x = positions[i][0];
@@ -71,45 +71,45 @@ public class ParkingData {
     private void initializeDestinations() {
         // BACKBAY
         allDestinations.put("Prudential Center",
-            new Destination("Prudential Center", new Coordinate(200, 50), AreaType.BACKBAY));
+            new Destination("Prudential Center", new Coordinate(275, 110), AreaType.BACKBAY));
 
         allDestinations.put("Copley Square",
-            new Destination("Copley Square", new Coordinate(600, 170), AreaType.BACKBAY));
+            new Destination("Copley Square", new Coordinate(690, 110), AreaType.BACKBAY));
 
         allDestinations.put("Newbury Street",
-            new Destination("Newbury Street", new Coordinate(500, 300), AreaType.BACKBAY));
+            new Destination("Newbury Street", new Coordinate(490, 355), AreaType.BACKBAY));
 
         // FENWAY
         allDestinations.put("Fenway Park",
-            new Destination("Fenway Park", new Coordinate(200, 50), AreaType.FENWAY));
+            new Destination("Fenway Park", new Coordinate(275, 110), AreaType.FENWAY));
         allDestinations.put("Museum of Fine Arts",
-            new Destination("Museum of Fine Arts", new Coordinate(600, 170), AreaType.FENWAY));
+            new Destination("Museum of Fine Arts", new Coordinate(690, 110), AreaType.FENWAY));
         allDestinations.put("Northeastern University",
-            new Destination("Northeastern University", new Coordinate(500, 300), AreaType.FENWAY));
+            new Destination("Northeastern University", new Coordinate(490, 355), AreaType.FENWAY));
 
         // DOWNTOWN
         allDestinations.put("Boston Common",
-            new Destination("Boston Common", new Coordinate(200, 50), AreaType.DOWNTOWN));
+            new Destination("Boston Common", new Coordinate(275, 110), AreaType.DOWNTOWN));
         allDestinations.put("Faneuil Hall",
-            new Destination("Faneuil Hall", new Coordinate(600, 170), AreaType.DOWNTOWN));
+            new Destination("Faneuil Hall", new Coordinate(690, 110), AreaType.DOWNTOWN));
         allDestinations.put("State Street Office",
-            new Destination("State Street Office", new Coordinate(500, 300), AreaType.DOWNTOWN));
+            new Destination("State Street Office", new Coordinate(490, 355), AreaType.DOWNTOWN));
 
         // SEAPORT
-        allDestinations.put("Seaport World Trade Center",
-            new Destination("Seaport World Trade Center", new Coordinate(200, 50), AreaType.SEAPORT));
+        allDestinations.put("World Trade Center",
+            new Destination("World Trade Center", new Coordinate(275, 110), AreaType.SEAPORT));
         allDestinations.put("ICA Museum",
-            new Destination("ICA Museum", new Coordinate(600, 170), AreaType.SEAPORT));
+            new Destination("ICA Museum", new Coordinate(690, 110), AreaType.SEAPORT));
         allDestinations.put("Harborwalk",
-            new Destination("Harborwalk", new Coordinate(500, 300), AreaType.SEAPORT));
+            new Destination("Harborwalk", new Coordinate(490, 355), AreaType.SEAPORT));
 
         // NEWTON
         allDestinations.put("Newton Centre",
-            new Destination("Newton Centre", new Coordinate(200, 50), AreaType.NEWTON));
+            new Destination("Newton Centre", new Coordinate(275, 110), AreaType.NEWTON));
         allDestinations.put("Boston College",
-            new Destination("Boston College", new Coordinate(600, 170), AreaType.NEWTON));
+            new Destination("Boston College", new Coordinate(690, 110), AreaType.NEWTON));
         allDestinations.put("Newton Library",
-            new Destination("Newton Library", new Coordinate(500, 300), AreaType.NEWTON));
+            new Destination("Newton Library", new Coordinate(490, 355), AreaType.NEWTON));
     }
 
     private void initializeRoadNodes() {
@@ -122,15 +122,15 @@ public class ParkingData {
 
     private void initializeAreaRoadNodes(String areaKey) {
         allRoadNodes.put(areaKey + "_R1",
-            new RoadNode(areaKey + " Main Road R1", new Coordinate(100, 280)));
+            new RoadNode(areaKey + "_Main Road R1", new Coordinate(110, 250)));
         allRoadNodes.put(areaKey + "_R2",
-            new RoadNode(areaKey + " Main Road R2", new Coordinate(250, 280)));
+            new RoadNode(areaKey + "_Main Road R2", new Coordinate(320, 250)));
         allRoadNodes.put(areaKey + "_R3",
-            new RoadNode(areaKey + " Main Road R3", new Coordinate(400, 280)));
+            new RoadNode(areaKey + "_Main Road R3", new Coordinate(500, 250)));
         allRoadNodes.put(areaKey + "_R4",
-            new RoadNode(areaKey + " Main Road R4", new Coordinate(550, 280)));
+            new RoadNode(areaKey + "_Main Road R4", new Coordinate(680, 250)));
         allRoadNodes.put(areaKey + "_R5",
-            new RoadNode(areaKey + " Main Road R5", new Coordinate(700, 280)));
+            new RoadNode(areaKey + "_Main Road R5", new Coordinate(950, 250)));
     }
 
     public MapInterface<String, Spot> getAllSpots() {
