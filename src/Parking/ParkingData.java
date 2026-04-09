@@ -41,8 +41,35 @@ public class ParkingData {
 
             for (int i = 0; i < 12; i++) {
                 String id = "BOS-" + idCounter++;
-                double price = 2.0 + (4.0 * rand.nextDouble());
-                boolean occupied = rand.nextBoolean();
+                
+                // set some prices and availability for demo
+                double price;
+                boolean occupied;
+                if (id.equals("BOS-101") || id.equals("BOS-102") 
+                        || id.equals("BOS-107") || id.equals("BOS-108")) {
+                    occupied = true;
+                    price = 5.0;  
+                }
+                else if (id.equals("BOS-103")) {
+                    occupied = false;
+                    price = 9.0;  
+                }
+                else if (id.equals("BOS-100")) {
+                    occupied = false;
+                    price = 2.0;  
+                }
+                else if (id.equals("BOS-106")) {
+                    occupied = false;
+                    price = 3.0;  
+                }
+                else if (id.equals("BOS-109")) {
+                    occupied = false;
+                    price = 8.5;  
+                }
+                else {
+                    price = 2.0 + (4.0 * rand.nextDouble());
+                    occupied = rand.nextBoolean();
+                }
 
                 int x;
                 int y;
@@ -175,6 +202,7 @@ public class ParkingData {
         return result;
     }
 
+    // connect 5 nodes on main road
     private void connectMainRoads(MyGraph<Node> graph) {
         connectRoadChain(graph, "BACKBAY");
         connectRoadChain(graph, "FENWAY");
@@ -198,6 +226,7 @@ public class ParkingData {
         graph.addEdge(r1.toNode(), r2.toNode(), dist);
     }
 
+    // parking spot connecting to the nearest road node
     private void connectSpotsToMainRoad(MyGraph<Node> graph) {
         for (Spot spot : allSpots.values()) {
             RoadNode nearestRoad = findNearestRoadNode(spot.getArea(), spot.getCoordinate());
@@ -206,6 +235,7 @@ public class ParkingData {
         }
     }
 
+    // destination connecting to the nearest road node
     private void connectDestinationsToMainRoad(MyGraph<Node> graph) {
         for (Destination d : allDestinations.values()) {
             RoadNode nearestRoad = findNearestRoadNode(d.getArea(), d.getCoordinate());
@@ -240,13 +270,14 @@ public class ParkingData {
         connectAreaSameSide(graph, AreaType.NEWTON);
     }
 
+    // connect parking spot and destination if they are on the same side
     private void connectAreaSameSide(MyGraph<Node> graph, AreaType area) {
         ListInterface<Node> topNodes = new MyArrayList<>();
         ListInterface<Node> bottomNodes = new MyArrayList<>();
 
         for (Spot spot : allSpots.values()) {
             if (spot.getArea() == area) {
-                if (spot.getCoordinate().getY() < 280) {
+                if (spot.getCoordinate().getY() < 250) {
                     topNodes.add(spot.toNode());
                 } else {
                     bottomNodes.add(spot.toNode());
@@ -301,6 +332,14 @@ public class ParkingData {
             graph.addEdge(a, b, dist);
         }
     }
+    
+    // connect 5 areas
+    private void connectAreaChains(MyGraph<Node> graph) {
+        connectRoadNodes(graph, "BACKBAY_R5", "FENWAY_R1");
+        connectRoadNodes(graph, "FENWAY_R5", "DOWNTOWN_R1");
+        connectRoadNodes(graph, "DOWNTOWN_R5", "SEAPORT_R1");
+        connectRoadNodes(graph, "SEAPORT_R5", "NEWTON_R1");
+    }
 
     public MyGraph<Node> buildGraph() {
         MyGraph<Node> graph = new MyGraph<>();
@@ -318,6 +357,7 @@ public class ParkingData {
         }
 
         connectMainRoads(graph);
+        connectAreaChains(graph); 
         connectSpotsToMainRoad(graph);
         connectDestinationsToMainRoad(graph);
         connectSameSideNeighbors(graph);

@@ -141,15 +141,15 @@ public class UserPage extends JFrame {
 
             refreshAreaPanels();
         });
-		btnNewButton.setBounds(593, 61, 140, 29);
+		btnNewButton.setBounds(623, 61, 140, 29);
 		contentPane.add(btnNewButton);
 		
 		resultLabel = new JLabel("Please choose a destination.");
-		resultLabel.setBounds(745, 66, 279, 16);
+		resultLabel.setBounds(775, 66, 279, 16);
 		contentPane.add(resultLabel);
 		// Reservation Buttons
 		JButton reserveButton = new JButton("Reserve");
-		reserveButton.setBounds(1025, 60, 120, 30);
+		reserveButton.setBounds(1035, 60, 120, 30);
 		contentPane.add(reserveButton);
 
 	
@@ -192,11 +192,11 @@ public class UserPage extends JFrame {
 		
 		// User Preference Slider
 		JLabel prefLabel = new JLabel("Preference:");
-		prefLabel.setBounds(312, 66, 100, 16);
+		prefLabel.setBounds(322, 66, 100, 16);
 		contentPane.add(prefLabel);
 
 		preferenceSlider = new JSlider(0, 100, 50); 
-		preferenceSlider.setBounds(381, 48, 200, 40);
+		preferenceSlider.setBounds(391, 48, 200, 40);
 		preferenceSlider.setMajorTickSpacing(25);
 		preferenceSlider.setMinorTickSpacing(5); 
 		preferenceSlider.setPaintTicks(true);
@@ -205,11 +205,11 @@ public class UserPage extends JFrame {
 
 		// preference label description
 		JLabel leftLabel = new JLabel("Affordable");
-		leftLabel.setBounds(391, 89, 80, 16);
+		leftLabel.setBounds(401, 89, 80, 16);
 		contentPane.add(leftLabel);
 
 		JLabel rightLabel = new JLabel("Convenient");
-		rightLabel.setBounds(509, 89, 100, 16);
+		rightLabel.setBounds(519, 89, 100, 16);
 		contentPane.add(rightLabel);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(37, 130, 1120, 560);
