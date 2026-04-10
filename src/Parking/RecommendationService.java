@@ -3,6 +3,8 @@ package Parking;
 import PriorityQueue.MyPriorityQueue;
 import Graph.MyGraph;
 import Graph.Node;
+import List.MyArrayList;
+import Map.MyHashMap;
 
 public class RecommendationService {
 
@@ -20,9 +22,14 @@ public class RecommendationService {
      * - normalized price
      * - user preference weights
      */
-    public Spot recommend(String destinationName,
-            double distanceWeight,
-            double priceWeight) {
+    public Spot recommend(String destinationName, double distanceWeight, double priceWeight) {
+    	
+    	// for printout
+    	MyArrayList<Spot> spots = new MyArrayList<>();
+    	MyHashMap<Spot, Double> scoreMap = new MyHashMap<>();
+    	MyHashMap<Spot, Double> distMap = new MyHashMap<>();
+    	MyHashMap<Spot, Double> normDistMap = new MyHashMap<>();
+    	MyHashMap<Spot, Double> normPriceMap = new MyHashMap<>();
 
 		Destination destination = parkingData.getDestinationByName(destinationName);
 		
@@ -68,29 +75,65 @@ public class RecommendationService {
 				  double normalizedPrice = normalize(price, minPrice, maxPrice);
 				  double normalizedDistance = normalize(distance, minDistance, maxDistance);
 				
+				  // Normalization compresses distance differences, making price dominate the decision
+				  // scale normalized distance
 				  double score =
 				      distanceWeight * normalizedDistance +
 				      priceWeight * normalizedPrice;
-				
-				  System.out.println(
-						    spot.getSpotId()
-						    + " | dist=" + distance
-						    + " | price=" + price
-						    + " | normDist=" + normalizedDistance
-						    + " | normPrice=" + normalizedPrice
-						    + " | score=" + score
-						);
+				  
+				  // printout preparation
+				  spots.add(spot);
+			      scoreMap.put(spot, score);
+			      distMap.put(spot, distance);
+			      normDistMap.put(spot, normalizedDistance);
+			      normPriceMap.put(spot, normalizedPrice);
 				  
 				  pq.insert(spot, score);
 			}
 		}
 		
-			return pq.isEmpty() ? null : pq.removeBest();
+		// printout info
+		// sort by score
+		for (int i = 0; i < spots.size(); i++) {
+		    for (int j = 0; j < spots.size() - 1 - i; j++) {
+		        Spot a = spots.get(j);
+		        Spot b = spots.get(j + 1);
+
+		        if (scoreMap.get(a) > scoreMap.get(b)) {
+		            Spot temp = a;
+		            spots.set(j, b);
+		            spots.set(j + 1, temp);
+		        }
+		    }
+		}
+
+		// print once
+		System.out.println("=== Ranking ===");
+
+		for (int i = 0; i < spots.size(); i++) {
+		    Spot s = spots.get(i);
+
+		    System.out.println(
+		    	s.getSpotId()
+		    	+ " | dist=" + String.format("%.6f", distMap.get(s))
+		    	+ " | price=" + String.format("%.6f", s.getPrice())
+		    	+ " | normDist=" + String.format("%.6f", normDistMap.get(s))
+		    	+ " | normPrice=" + String.format("%.6f", normPriceMap.get(s))
+		    	+ " | wDist=" + String.format("%.6f", distanceWeight * normDistMap.get(s))
+		        + " | wPrice=" + String.format("%.6f", priceWeight * normPriceMap.get(s))
+		    	+ " | score=" + String.format("%.6f", scoreMap.get(s))
+		    );
 		}
 		
-		private double normalize(double value, double min, double max) {
-			if (max == min) return 0.0;
-			return (value - min) / (max - min);
-		}
+		return pq.isEmpty() ? null : pq.removeBest();
+	}
+		
+		
+    private double normalize(double value, double min, double max) {
+    	if (max == min) return 0.0;
+		return (value - min) / (max - min);
+	}
+		
+		
 		
 }

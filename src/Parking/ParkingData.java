@@ -45,31 +45,34 @@ public class ParkingData {
                 // set some prices and availability for demo
                 double price;
                 boolean occupied;
-                if (id.equals("BOS-101") || id.equals("BOS-102") 
-                        || id.equals("BOS-107") || id.equals("BOS-100")) {
+                /*if (id.equals("BOS-124") || id.equals("BOS-126") 
+                        || id.equals("BOS-131") || id.equals("BOS-133")) {
                     occupied = true;
                     price = 5.0;  
                 }
-                else if (id.equals("BOS-103")) {
+                else if (id.equals("BOS-125")) {
                     occupied = false;
                     price = 9.0;  
                 }
-                else if (id.equals("BOS-108")) {
+                else if (id.equals("BOS-130")) {
                     occupied = false;
-                    price = 5.0;  
+                    price = 2.0;  
                 }
-                else if (id.equals("BOS-106")) {
+                else if (id.equals("BOS-132")) {
                     occupied = false;
                     price = 3.0;  
                 }
-                else if (id.equals("BOS-109")) {
+                else if (id.equals("BOS-127")) {
                     occupied = false;
                     price = 8.5;  
                 }
                 else {
                     price = 5.0;
                     occupied = rand.nextBoolean();
-                }
+                }*/
+                
+                price = 2.0 + 8.0 * rand.nextDouble();
+                occupied = rand.nextBoolean();
 
                 int x;
                 int y;
