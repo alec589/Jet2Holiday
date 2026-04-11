@@ -14,7 +14,8 @@ public class UserAccount {
 
     // 30 days in milliseconds
     private static final long THIRTY_DAYS = 30L * 24 * 60 * 60 * 1000;
-
+   
+    //create user account with empty missed history
     public UserAccount(String username,String password) {
         this.username = username;
         this.password = password;
@@ -29,12 +30,12 @@ public class UserAccount {
     public String getUsername() {
         return username;
     }
-
+    // update and return blacklist status
     public boolean isBlacklisted() {
         refreshBlacklistStatus();
         return blacklisted;
     }
-
+ // return number of recent missed reservations
     public int getMissedReservationCount() {
         refreshBlacklistStatus();
         return missedReservationTimes.size();
@@ -57,7 +58,7 @@ public class UserAccount {
     }
 
     /**
-     * Clear all history manually (optional)
+     * Clear all history manually 
      */
     public void clearMissedReservationHistory() {
         missedReservationTimes.clear();

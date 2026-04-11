@@ -8,7 +8,7 @@ import Map.MyHashMap;
 public class ReservationService {
     // store the current valid reservations
     private MapInterface<String, Reservation> currenteReservations = new MyHashMap<>();
-
+   // Reserve a spot if user is valid and spot is available
     public boolean reserve(UserAccount user, Spot spot) {
         cleanupExpiredReservations();
 
@@ -22,7 +22,7 @@ public class ReservationService {
         spot.setOccupied(true);
         return true;
     }
-
+   //remove expired reservations before check-in
     public boolean checkIn(String spotId) {
         cleanupExpiredReservations();
 
@@ -32,7 +32,7 @@ public class ReservationService {
         r.checkIn();
         return true;
     }
-
+   // cancel reservation and free the spot if it exists
     public boolean cancelReservation(String spotId) {
         Reservation r = currenteReservations.get(spotId);
         if (r == null) return false;
@@ -41,7 +41,7 @@ public class ReservationService {
         currenteReservations.remove(spotId);
         return true;
     }
-
+// remove expired reservations and free spots
     public void cleanupExpiredReservations() {
         MyArrayList<String> expiredIds = new MyArrayList<>();
 
@@ -61,7 +61,7 @@ public class ReservationService {
             }
         }
     }
-
+   //get all active reservations for a specific user
     public ListInterface<Reservation> getReservationsByUser(UserAccount user) {
         cleanupExpiredReservations();
 
@@ -77,7 +77,7 @@ public class ReservationService {
 
         return result;
     }
-
+    //get reservation after cleaning expired ones
     public Reservation getReservation(String spotId) {
         cleanupExpiredReservations();
         return currenteReservations.get(spotId);

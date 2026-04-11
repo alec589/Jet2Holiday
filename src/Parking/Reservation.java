@@ -1,5 +1,6 @@
 package Parking;
-
+//tracking which user reserves which spot 
+//and whether the reservation is still valid.
 public class Reservation {
     private Spot spot;
     private UserAccount user;
