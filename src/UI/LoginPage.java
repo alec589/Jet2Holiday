@@ -102,43 +102,27 @@ public class LoginPage extends JFrame {
     }
     
 
-    /**
-     * ⭐ 核心登录逻辑
-     */
     private void handleLogin() {
-
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-
-        //  admin 
         if (username.equals("admin") && password.equals("1234")) {
             new AdminPage(sharedData).setVisible(true);
             dispose();
             return;
         }
-
-     // User does not exist → Login is not permitted
         if (!users.containsKey(username)) {
             JOptionPane.showMessageDialog(this, "User does not exist!");
             return;
         }
-
-        // get user
         UserAccount user = users.get(username);
-
-        // wrong password
         if (!user.checkPassword(password)) {
             JOptionPane.showMessageDialog(this, "Wrong password!");
             return;
         }
-
-        //  Blacklist Check
         if (user.isBlacklisted()) {
             JOptionPane.showMessageDialog(this, "You are blacklisted!");
             return;
         }
-
-        // Login successful then Enter user page 
         new UserPage(user, reservationService, sharedData).setVisible(true);
         dispose();
     }
@@ -146,20 +130,14 @@ public class LoginPage extends JFrame {
 
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-
-        // NULL CHECK
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Username or password cannot be empty!");
             return;
         }
-
-        // The user already exists
         if (users.containsKey(username)) {
             JOptionPane.showMessageDialog(this, "User already exists!");
             return;
         }
-
-        // Create a new user
         UserAccount newUser = new UserAccount(username, password);
         users.put(username, newUser);
 
