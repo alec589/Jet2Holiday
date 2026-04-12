@@ -136,7 +136,7 @@ public class MyReservationsPage extends JFrame {
             return;
         }
 
-        // 如果条数变了，直接整表重载一次
+        
         if (tableModel.getRowCount() != reservations.size()) {
             loadData();
             return;
