@@ -64,7 +64,7 @@ public class MyReservationsPage extends JFrame {
         table = new JTable(tableModel);
         table.setRowHeight(30);
 
-        // 这些一定要放在 table 创建之后
+        
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
